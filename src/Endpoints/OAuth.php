@@ -38,10 +38,7 @@ class OAuth extends Base {
 	}
 
 	private function save_auth( $body ) {
-		if ( $body->ok ) {
-			return;
-		}
-
+		
 		$args = [
 			'post_content' => $body->incoming_webhook->url,
 			'post_status'  => 'publish',

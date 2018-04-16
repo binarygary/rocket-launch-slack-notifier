@@ -25,10 +25,10 @@ class OAuth extends Base {
 	public function auth() {
 		$args = [
 			'body' => [
-				'client_id' => get_option( Defaults::SLACK_APP_ID ),
+				'client_id'     => get_option( Defaults::SLACK_APP_ID ),
 				'client_secret' => get_option( Defaults::SLACK_APP_SECRET ),
-				'code' => $_GET['code'],
-				'redirect_uri' => $this->get_endpoint_url(),
+				'code'          => $_GET['code'],
+				'redirect_uri'  => $this->get_endpoint_url(),
 			],
 		];
 
@@ -47,9 +47,10 @@ class OAuth extends Base {
 		echo $body->incoming_webhook->url;
 
 		$args = [
-			'post_title' => $body->incoming_webhook->url,
-			'post_statue' => 'publish',
-			'post_type' => Slack_URL::POST_TYPE,
+			'post_content' => $body->incoming_webhook->url,
+			'post_status'  => 'publish',
+			'post_type'    => Slack_URL::POST_TYPE,
+			'post_title'   => $body->incoming_webhook->channel_id,
 		];
 
 		$slack_url_id = wp_insert_post( $args );

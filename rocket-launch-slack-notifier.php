@@ -11,9 +11,9 @@ require_once trailingslashit( __DIR__ ) . 'vendor/autoload.php';
 
 // Start the core plugin
 add_action( 'plugins_loaded', function () {
-	textsmash()->init();
+	launch()->init();
 }, 1, 0 );
 
-function textsmash() {
-	return \TextSmash\Lists\Core::instance( new Pimple\Container( [ 'plugin_file' => __FILE__ ] ) );
+function launch() {
+	return \BinaryGary\Rocket\Core::instance( new Pimple\Container( [ 'plugin_file' => __FILE__ ] ) );
 }

@@ -23,7 +23,7 @@ class Defaults {
 
 	public function text_fields() {
 		return [
-			self::SLACK_APP_ID => __( 'Slack APP ID', 'textsmash' ),
+			self::SLACK_APP_ID => __( 'Slack APP ID', 'tribe' ),
 		];
 	}
 

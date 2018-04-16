@@ -4,7 +4,7 @@ namespace BinaryGary\Rocket\Service_Providers;
 
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
-use TextSmash\Lists\Settings\Defaults;
+use BinaryGary\Rocket\Settings\Defaults;
 
 class Settings_Provider implements ServiceProviderInterface {
 

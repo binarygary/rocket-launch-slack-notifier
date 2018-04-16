@@ -3,7 +3,7 @@
 namespace BinaryGary\Rocket;
 
 use Pimple\Container;
-use TextSmash\Lists\Service_Providers\Settings_Provider;
+use BinaryGary\Rocket\Service_Providers\Settings_Provider;
 
 class Core {
 

@@ -8,7 +8,8 @@ class Defaults {
 
 	const SETTINGS_GROUP = 'rocket-launch-slack-notifier-group';
 
-	const SLACK_APP_ID = 'slack_app_id';
+	const SLACK_APP_ID     = 'slack_app_id';
+	const SLACK_APP_SECRET = 'slack_app_id';
 
 	public function create_menu() {
 		add_submenu_page(
@@ -23,7 +24,8 @@ class Defaults {
 
 	public function text_fields() {
 		return [
-			self::SLACK_APP_ID => __( 'Slack APP ID', 'tribe' ),
+			self::SLACK_APP_ID     => __( 'Slack APP ID', 'tribe' ),
+			self::SLACK_APP_SECRET => __( 'Slack APP Secret', 'tribe' ),
 		];
 	}
 

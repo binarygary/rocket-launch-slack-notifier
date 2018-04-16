@@ -1,0 +1,21 @@
+{
+  "name": "binarygary/rocket-launch-slack-notifier",
+  "description": "Send launch notices to slack.",
+  "type": "wordpress-plugin",
+  "require": {
+    "pimple/pimple": "^3.2"
+  },
+  "authors": [
+    {
+      "name": "Gary Kovar",
+      "email": "plugins@binarygary.com"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "BinaryGary\\Rocket\\": "src/"
+    },
+    "files": [
+    ]
+  }
+}

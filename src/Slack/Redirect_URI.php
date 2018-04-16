@@ -2,11 +2,21 @@
 
 namespace BinaryGary\Rocket\Slack;
 
+use BinaryGary\Rocket\Endpoints\OAuth;
+
 class Redirect_URI {
 
-	public function get_url() {
+	/**
+	 * @var OAuth
+	 */
+	protected $oauth;
 
-		return '';
+	public function __construct( OAuth $oauth ) {
+		$this->oauth = $oauth;
+	}
+
+	public function get_url() {
+		return $this->oauth->get_endpoint_url();
 	}
 
 }

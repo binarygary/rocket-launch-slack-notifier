@@ -2,6 +2,9 @@
 
 namespace BinaryGary\Rocket;
 
+use BinaryGary\Rocket\Service_Providers\Endpoints_Provider;
+use BinaryGary\Rocket\Service_Providers\Shortcodes_Provider;
+use BinaryGary\Rocket\Service_Providers\Slack_Provider;
 use Pimple\Container;
 use BinaryGary\Rocket\Service_Providers\Settings_Provider;
 
@@ -32,6 +35,9 @@ class Core {
 
 	private function load_service_providers() {
 		$this->container->register( new Settings_Provider() );
+		$this->container->register( new Endpoints_Provider() );
+		$this->container->register( new Shortcodes_Provider() );
+		$this->container->register( new Slack_Provider() );
 	}
 
 	public function container() {

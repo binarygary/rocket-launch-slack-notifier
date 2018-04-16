@@ -53,7 +53,7 @@ class OAuth extends Base {
 
 		update_post_meta( $slack_url_id, 'response', $body );
 
-		wp_remote_post('https://slack.com/api/chat.postMessage',
+		$result = wp_remote_post('https://slack.com/api/chat.postMessage',
 		[
 			'headers' => [
 				'Content-type'  => 'application/x-www-form-urlencoded',
@@ -62,10 +62,12 @@ class OAuth extends Base {
 				'token' => $body->access_token,
 				'channel' => $body->incoming_webhook->channel_id,
 				'text' => 'test',
-				
+
 			],
 		]
 		);
+
+		print_r( $result );
 	}
 
 }

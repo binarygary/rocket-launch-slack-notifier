@@ -38,14 +38,16 @@ class OAuth extends Base {
 	}
 
 	private function save_auth( $body ) {
+		if ( $body->ok ) {
+			return;
+		}
+
 		$args = [
 			'post_content' => $body->incoming_webhook->url,
 			'post_status'  => 'publish',
 			'post_type'    => Slack_URL::POST_TYPE,
 			'post_title'   => $body->incoming_webhook->channel_id,
 		];
-
-		print_r($args);
 
 		$slack_url_id = wp_insert_post( $args );
 

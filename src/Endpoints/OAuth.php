@@ -38,6 +38,8 @@ class OAuth extends Base {
 	}
 
 	private function save_auth( $body ) {
+		print_r( $body );
+
 		if ( $body->ok ) {
 			return;
 		}

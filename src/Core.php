@@ -3,6 +3,7 @@
 namespace BinaryGary\Rocket;
 
 use BinaryGary\Rocket\Service_Providers\Endpoints_Provider;
+use BinaryGary\Rocket\Service_Providers\Post_Type_Provider;
 use BinaryGary\Rocket\Service_Providers\Shortcodes_Provider;
 use BinaryGary\Rocket\Service_Providers\Slack_Provider;
 use Pimple\Container;
@@ -38,6 +39,7 @@ class Core {
 		$this->container->register( new Endpoints_Provider() );
 		$this->container->register( new Shortcodes_Provider() );
 		$this->container->register( new Slack_Provider() );
+		$this->container->register( new Post_Type_Provider() );
 	}
 
 	public function container() {

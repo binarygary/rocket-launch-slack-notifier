@@ -2,6 +2,7 @@
 
 namespace BinaryGary\Rocket\Endpoints;
 
+use BinaryGary\Rocket\Post_Types\Slack_URL;
 use BinaryGary\Rocket\Settings\Defaults;
 
 class OAuth extends Base {
@@ -33,7 +34,23 @@ class OAuth extends Base {
 
 		$results = wp_remote_post( self::SLACK_CONFIRM, $args );
 
-		print_r( $results );
+		$this->save_auth( json_decode( $results['body'] ) );
+	}
+
+	private function save_auth( $body ) {
+		if ( $body->ok ) {
+			return;
+		}
+
+		$args = [
+			'post_title' => $body->incoming_webhook->url,
+			'post_statue' => 'publish',
+			'post_type' => Slack_URL::POST_TYPE,
+		];
+
+		$slack_url_id = wp_insert_post( $args );
+
+		update_post_meta( $slack_url_id, 'response', $body );
 	}
 
 }

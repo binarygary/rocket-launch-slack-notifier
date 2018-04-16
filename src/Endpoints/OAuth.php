@@ -42,6 +42,8 @@ class OAuth extends Base {
 			return;
 		}
 
+		echo $body->incoming_webhook->url;
+
 		$args = [
 			'post_title' => $body->incoming_webhook->url,
 			'post_statue' => 'publish',

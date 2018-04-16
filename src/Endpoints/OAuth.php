@@ -8,7 +8,7 @@ class OAuth extends Base {
 
 	public function register() {
 		register_rest_route( self::PATH, self::ENDPOINT, [
-			'methods'  => 'POST',
+			'methods'  => 'GET',
 			'callback' => [ $this, 'auth' ],
 		] );
 	}

@@ -3,9 +3,20 @@
 namespace BinaryGary\Rocket\Endpoints;
 
 
+use BinaryGary\Rocket\Slack\Post_Message;
+
 abstract class Base {
 
 	const PATH = 'rocket-slack/v1';
+
+	/**
+	 * @var Post_Message
+	 */
+	protected $message;
+
+	public function __construct( Post_Message $message ) {
+		$this->message = $message;
+	}
 
 	abstract public function register();
 

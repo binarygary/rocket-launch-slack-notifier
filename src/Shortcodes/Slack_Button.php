@@ -2,6 +2,8 @@
 
 namespace BinaryGary\Rocket\Shortcodes;
 
+use BinaryGary\Rocket\Endpoints\OAuth;
+use BinaryGary\Rocket\Post_Types\Slack_URL;
 use BinaryGary\Rocket\Settings\Defaults;
 use BinaryGary\Rocket\Slack\Redirect_URI;
 
@@ -9,10 +11,13 @@ class Slack_Button {
 
 	const ENDPOINT = 'https://slack.com/oauth/authorize?scope=incoming-webhook';
 
-	protected $redirect_URI;
+	/**
+	 * @var OAuth
+	 */
+	protected $o_auth;
 
-	public function __construct( Redirect_URI $redirect_URI ) {
-		$this->redirect_URI = $redirect_URI;
+	public function __construct( OAuth $o_auth ) {
+		$this->o_auth = $o_auth;
 	}
 
 	public function generate() {
@@ -29,7 +34,7 @@ class Slack_Button {
 		$args = [
 			'scope'        => 'incoming-webhook',
 			'client_id'    => get_option( Defaults::SLACK_APP_ID ),
-			'redirect_uri' => $this->redirect_URI->get_url(),
+			'redirect_uri' => $this->o_auth->get_endpoint_url(),
 		];
 
 		return add_query_arg( $args, self::ENDPOINT );

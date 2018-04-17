@@ -11,6 +11,9 @@ class Defaults {
 	const SLACK_APP_ID     = 'slack_app_id';
 	const SLACK_APP_SECRET = 'slack_app_secret';
 
+	const SUCCESS_PAGE = 'slack_api_success';
+	const FAILURE_PAGE = 'slack_api_failure';
+
 	public function create_menu() {
 		add_submenu_page(
 			'options-general.php',
@@ -29,11 +32,21 @@ class Defaults {
 		];
 	}
 
+	public function page_fields() {
+		return [
+			self::SUCCESS_PAGE => __( 'Success Page', 'tribe' ),
+			self::FAILURE_PAGE => __( 'Failure Page', 'tribe' ),
+		];
+	}
+
 	public function register_settings() {
 		register_setting( self::SETTINGS_GROUP, self::SLACK_APP_ID );
 		register_setting( self::SETTINGS_GROUP, self::SLACK_APP_SECRET );
+		register_setting( self::SETTINGS_GROUP, self::SUCCESS_PAGE );
+		register_setting( self::SETTINGS_GROUP, self::FAILURE_PAGE );
 
-		$this->input_settings();
+		$this->text_input_settings();
+		$this->page_input_settings();
 
 	}
 
@@ -53,7 +66,7 @@ class Defaults {
 		<?php
 	}
 
-	private function input_settings() {
+	private function text_input_settings() {
 		foreach ( $this->text_fields() as $field => $title ) {
 			add_settings_section(
 				$field . '_section',
@@ -63,6 +76,22 @@ class Defaults {
 						get_option( $field ),
 						$field
 					);
+				},
+				self::SETTINGS_PAGE_NAME
+			);
+		}
+	}
+
+	private function page_input_settings() {
+		foreach ( $this->page_fields() as $field => $title ) {
+			add_settings_section(
+				$field . '_section',
+				$title,
+				function () use ( $field ) {
+					wp_dropdown_pages( [
+						'name' => $field,
+						'selected' => get_option( $field ),
+					] );
 				},
 				self::SETTINGS_PAGE_NAME
 			);

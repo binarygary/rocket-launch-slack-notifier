@@ -62,7 +62,6 @@ class OAuth extends Base {
 		update_post_meta( $slack_url_id, 'response', $body );
 
 		$this->message->send( $body->access_token, $body->incoming_webhook->channel_id, 'test' );
-
 	}
 
 }

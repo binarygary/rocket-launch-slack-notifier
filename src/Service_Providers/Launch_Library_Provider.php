@@ -13,7 +13,7 @@ class Launch_Library_Provider implements ServiceProviderInterface {
 
 	public function register( Container $container ) {
 		$container[ self::RETRIEVER ] = function () use ( $container ) {
-			return new Retriever( $container[ Slack_Provider::POST_MESSAGE ] );
+			return new Retriever( $container[ Slack_Provider::WEBHOOKS ] );
 		};
 
 		if ( ! wp_next_scheduled( 'launch_cron' ) ) {

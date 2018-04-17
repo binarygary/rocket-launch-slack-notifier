@@ -45,6 +45,7 @@ class Defaults {
 	public function register_settings() {
 		register_setting( self::SETTINGS_GROUP, self::SLACK_APP_ID );
 		register_setting( self::SETTINGS_GROUP, self::SLACK_APP_SECRET );
+		register_setting( self::SETTINGS_GROUP, self::SUCCESS_MESSAGE );
 		register_setting( self::SETTINGS_GROUP, self::SUCCESS_PAGE );
 		register_setting( self::SETTINGS_GROUP, self::FAILURE_PAGE );
 

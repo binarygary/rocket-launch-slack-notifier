@@ -29,4 +29,12 @@ class Webhooks {
 		}
 	}
 
+	public function add_interval( $schedules ) {
+		$schedules['minutely'] = array(
+			'interval' => 60,
+			'display' => __('Once a minute')
+		);
+		return $schedules;
+	}
+
 }

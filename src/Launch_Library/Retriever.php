@@ -9,6 +9,8 @@ class Retriever {
 
 	const ENDPOINT = 'https://launchlibrary.net/1.4/launch/next/5';
 
+	const DAILY_UPDATE = 'launch_daily_update';
+
 	/**
 	 * @var Post_Message
 	 */
@@ -46,6 +48,11 @@ class Retriever {
 			$this->process_launch( $launch );
 		}
 
+		if ( $this->timestamp - get_option( self::DAILY_UPDATE, 0 ) > DAY_IN_SECONDS) {
+			$this->daily_update( $launches );
+			update_option( self::DAILY_UPDATE, $this->timestamp, false );
+		}
+
 	}
 
 	protected function process_launch( $launch ) {
@@ -62,6 +69,20 @@ class Retriever {
 			}
 		}
 
+	}
+
+	private function daily_update( $launches ) {
+		$message = '';
+		foreach ( $launches->launches as $launch ) {
+			$message .= sprintf( '%s From %s on a %s%s',
+				$launch->name,
+				$launch->location->name,
+				$launch->rocket->name,
+				PHP_EOL
+			);
+		}
+
+		$this->messages->alert( $message );
 	}
 
 	public function add_interval( $schedules ) {

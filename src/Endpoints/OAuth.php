@@ -51,7 +51,8 @@ class OAuth extends Base {
 	private function save_auth( $body ) {
 
 		if ( ! $body->ok ) {
-			print_r( $body );
+			$this->redirect_uri->failure();
+			die;
 		}
 
 		$args = [
@@ -65,7 +66,9 @@ class OAuth extends Base {
 
 		update_post_meta( $slack_url_id, 'response', $body );
 
-		$this->message->send( $body->access_token, $body->incoming_webhook->channel_id, 'test' );
+		$this->message->send( $body->access_token, $body->incoming_webhook->channel_id, get_option( Defaults::SUCCESS_MESSAGE, 'Hallo!' ) );
+		$this->redirect_uri->success();
+		die;
 	}
 
 }

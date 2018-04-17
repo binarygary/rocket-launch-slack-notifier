@@ -11,6 +11,8 @@ class Defaults {
 	const SLACK_APP_ID     = 'slack_app_id';
 	const SLACK_APP_SECRET = 'slack_app_secret';
 
+	const SUCCESS_MESSAGE = 'slack_success_message';
+
 	const SUCCESS_PAGE = 'slack_api_success';
 	const FAILURE_PAGE = 'slack_api_failure';
 
@@ -29,6 +31,7 @@ class Defaults {
 		return [
 			self::SLACK_APP_ID     => __( 'Slack APP ID', 'tribe' ),
 			self::SLACK_APP_SECRET => __( 'Slack APP Secret', 'tribe' ),
+			self::SUCCESS_MESSAGE  => __( 'Success Message', 'tribe' ),
 		];
 	}
 

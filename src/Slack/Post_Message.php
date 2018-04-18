@@ -8,7 +8,7 @@ class Post_Message {
 	const ENDPOINT = 'https://slack.com/api/chat.postMessage';
 
 	public function send( $token, $channel, $message ) {
-		wp_remote_post( self::ENDPOINT,
+		$result = wp_remote_post( self::ENDPOINT,
 			[
 				'headers' => [
 					'Content-type' => 'application/x-www-form-urlencoded',
@@ -20,6 +20,8 @@ class Post_Message {
 				],
 			]
 		);
+
+		error_log( $result );
 	}
 
 }

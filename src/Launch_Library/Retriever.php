@@ -46,9 +46,10 @@ class Retriever {
 
 		foreach ( $launches->launches as $launch ) {
 			$this->process_launch( $launch );
+			$this->messages->alert( $this->build_message_one_day( $launch ) );
 		}
 
-		$this->messages->alert( $this->build_message_one_day( $launch ) );
+
 
 		if ( $this->timestamp - get_option( self::DAILY_UPDATE, 0 ) > DAY_IN_SECONDS) {
 			$this->daily_update( $launches );

@@ -19,39 +19,40 @@ class Retriever {
 	protected $timestamp;
 
 	public function __construct( Webhooks $webhooks ) {
-		$this->messages = $webhooks;
+		$this->messages  = $webhooks;
 		$this->timestamp = time();
 	}
 
 	public function range() {
 		return [
-			'one_day' => [
-				'min_range'   => 86340,
+			'one_day'     => [
+				'min_range' => 86340,
 				'max_range' => 86400,
 			],
-			'one_hour' => [
-				'min_range'   => 3540,
+			'one_hour'    => [
+				'min_range' => 3540,
 				'max_range' => 3600,
 			],
 			'five_minute' => [
-				'min_range'   => 240,
+				'min_range' => 240,
 				'max_range' => 300,
 			],
 		];
 	}
 
 	public function get_launches() {
-		$result = wp_remote_get( self::ENDPOINT );
-		$launches = json_decode( $result['body']);
+		$result   = wp_remote_get( self::ENDPOINT );
+		$launches = json_decode( $result['body'] );
 
 		foreach ( $launches->launches as $launch ) {
 			$this->process_launch( $launch );
 			$this->messages->alert( $this->build_message_one_day( $launch ) );
+			$this->messages->alert( $this->build_message_one_hour( $launch ) );
+			$this->messages->alert( $this->build_message_five_minute( $launch ) );
 		}
 
 
-
-		if ( $this->timestamp - get_option( self::DAILY_UPDATE, 0 ) > DAY_IN_SECONDS) {
+		if ( $this->timestamp - get_option( self::DAILY_UPDATE, 0 ) > DAY_IN_SECONDS ) {
 			$this->daily_update( $launches );
 			update_option( self::DAILY_UPDATE, $this->timestamp, false );
 		}
@@ -70,46 +71,51 @@ class Retriever {
 	}
 
 	private function build_message_one_day( $launch ) {
-		$message = [
-			'attachments' => [
+		$message['attachments'][0] = [
+			'pretext' => sprintf( '%s Launch Notice', '24 Hour' ),
+			'color'   => '#000000',
+			'title'   => $launch->name,
+			'fields'  => [
 				[
-					'pretext' => sprintf( '%s Launch Notice', '24 Hour' ),
-					'color'   => '#000000',
-					'title'   => $launch->name,
-					'fields'  => [
-						[
-							'title' => 'Net Launch',
-							'value' => sprintf( '<!date^%s^{date_num} {time}|%s>', $launch->netstamp, $launch->net ),
-							'short' => false,
-						],
-						[
-							'title' => 'Vehicle',
-							'value' => $launch->rocket->name,
-							'short' => false,
-						],
-						[
-							'title' => 'Launch Pad',
-							'value' => $launch->location->name,
-							'short' => false,
-						],
-					],
+					'title' => 'Net Launch',
+					'value' => sprintf( '<!date^%s^{date_num} {time}|%s>', $launch->netstamp, $launch->net ),
+					'short' => false,
+				],
+				[
+					'title' => 'Vehicle',
+					'value' => $launch->rocket->name,
+					'short' => false,
+				],
+				[
+					'title' => 'Launch Pad',
+					'value' => $launch->location->name,
+					'short' => false,
 				],
 			],
 		];
 
 		if ( isset( $launch->missions[0]->description ) ) {
-			$message['attachements']['text'] = $launch->missions[0]->description;
+			$message['attachments'][0]['text'] = $launch->missions[0]->description;
 		}
 
 		return $message;
 	}
 
 	private function build_message_one_hour( $launch ) {
-
+		return $this->build_message_one_day( $launch );
 	}
 
 	private function build_message_five_minute( $launch ) {
+		$message = $this->build_message_one_day( $launch );
+		if ( isset( $this->launch->vidURLs[0] ) ) {
+			$message['attachments'][0]['actions'] = [
+				'type' => 'button',
+				'text' => 'Live Launch Feed :rocket:',
+				'url'  => $launch->vidURLs[0],
+			];
+		}
 
+		return $message;
 	}
 
 	private function daily_update( $launches ) {
@@ -129,8 +135,9 @@ class Retriever {
 	public function add_interval( $schedules ) {
 		$schedules['minutely'] = array(
 			'interval' => 60,
-			'display' => __('Once a minute')
+			'display'  => __( 'Once a minute' ),
 		);
+
 		return $schedules;
 	}
 }

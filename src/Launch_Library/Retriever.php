@@ -46,9 +46,6 @@ class Retriever {
 
 		foreach ( $launches->launches as $launch ) {
 			$this->process_launch( $launch );
-			$this->messages->alert( $this->build_message_one_day( $launch ) );
-			$this->messages->alert( $this->build_message_one_hour( $launch ) );
-			$this->messages->alert( $this->build_message_five_minute( $launch ) );
 		}
 
 
@@ -73,7 +70,7 @@ class Retriever {
 	private function build_message_one_day( $launch ) {
 		$message['attachments'][0] = [
 			'pretext' => sprintf( '%s Launch Notice', '24 Hour' ),
-			'color'   => '#000000',
+			'color'   => '#42f4bc',
 			'title'   => $launch->name,
 			'fields'  => [
 				[

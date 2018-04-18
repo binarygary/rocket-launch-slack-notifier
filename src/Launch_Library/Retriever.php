@@ -144,7 +144,7 @@ class Retriever {
 			$message .= sprintf( '%s From %s at <!date^%s^{date_num} {time}|%s>%s',
 				$launch->name,
 				$launch->location->name,
-				$launch->netstamp,
+				strtotime( $launch->isonet ),
 				$launch->net,
 				PHP_EOL
 			);

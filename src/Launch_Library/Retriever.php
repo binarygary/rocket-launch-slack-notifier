@@ -25,15 +25,15 @@ class Retriever {
 
 	public function range() {
 		return [
-			'24 Hour' => [
+			'one_day' => [
 				'min_range'   => 86340,
 				'max_range' => 86400,
 			],
-			'1 Hour' => [
+			'one_hour' => [
 				'min_range'   => 3540,
 				'max_range' => 3600,
 			],
-			'5 Minutes' => [
+			'five_minute' => [
 				'min_range'   => 240,
 				'max_range' => 300,
 			],
@@ -48,6 +48,8 @@ class Retriever {
 			$this->process_launch( $launch );
 		}
 
+		$this->messages->alert( $this->build_message_one_day( $launch ) );
+
 		if ( $this->timestamp - get_option( self::DAILY_UPDATE, 0 ) > DAY_IN_SECONDS) {
 			$this->daily_update( $launches );
 			update_option( self::DAILY_UPDATE, $this->timestamp, false );
@@ -59,15 +61,53 @@ class Retriever {
 
 		foreach ( $this->range() as $frequency => $range ) {
 			if ( filter_var( $launch->netstamp - $this->timestamp, FILTER_VALIDATE_INT, [ 'options' => $range ] ) ) {
-				$message = sprintf( '%s From %s on a %s',
-					$launch->name,
-					$launch->location->name,
-					$launch->rocket->name
-				);
-
+				$message = $this->build_message_{$frequency}( $launch );
 				$this->messages->alert( $message );
 			}
 		}
+
+	}
+
+	private function build_message_one_day( $launch ) {
+		$message = [
+			'attachments' => [
+				[
+					'pretext' => sprintf( '%s Launch Notice', '24 Hour' ),
+					'color'   => '#000000',
+					'title'   => $launch->name,
+					'fields'  => [
+						[
+							'title' => 'Net Launch',
+							'value' => sprintf( '<!date^%s^{date_num} {time}|%s>', $launch->netstamp, $launch->net ),
+							'short' => false,
+						],
+						[
+							'title' => 'Vehicle',
+							'value' => $launch->rocket->name,
+							'short' => false,
+						],
+						[
+							'title' => 'Launch Pad',
+							'value' => $launch->location->name,
+							'short' => false,
+						],
+					],
+				],
+			],
+		];
+
+		if ( isset( $launch->missions[0]->description ) ) {
+			$message['attachements']['text'] = $launch->missions[0]->description;
+		}
+
+		return $message;
+	}
+
+	private function build_message_one_hour( $launch ) {
+
+	}
+
+	private function build_message_five_minute( $launch ) {
 
 	}
 

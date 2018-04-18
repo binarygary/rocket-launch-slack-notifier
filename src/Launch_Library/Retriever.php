@@ -46,8 +46,10 @@ class Retriever {
 
 		foreach ( $launches->launches as $launch ) {
 			$this->process_launch( $launch );
+			if ( defined( 'WP_CLI' ) && WP_CLI ) {
+				$this->messages->alert( $this->general_launch_info( $launch ) );
+			}
 		}
-
 
 		if ( $this->timestamp - get_option( self::DAILY_UPDATE, 0 ) > DAY_IN_SECONDS ) {
 			$this->daily_update( $launches );
@@ -91,6 +93,14 @@ class Retriever {
 			],
 		];
 
+		if ( ! ( $launch->netstamp ) ) {
+			$message['attachments'][0]['fields'][0] = [
+				'title' => 'Expected Launch Date',
+				'value' => sprintf( '<!date^%s^{date_num}|%s>', strtotime( $launch->isonet ), $launch->net ),
+				'short' => false,
+			];
+		}
+
 		if ( isset( $launch->missions[0]->description ) ) {
 			$message['attachments'][0]['text'] = $launch->missions[0]->description;
 		}
@@ -99,11 +109,16 @@ class Retriever {
 	}
 
 	private function build_message_one_hour( $launch ) {
-		return $this->build_message_one_day( $launch );
+		$message = $this->build_message_one_day( $launch );
+		$message['attachments'][0]['pretext'] = sprintf( '%s Launch Notice', '1 Hour' );
+		$message['attachments'][0]['color']   = '#35c496';
+		return $message;
 	}
 
 	private function build_message_five_minute( $launch ) {
 		$message = $this->build_message_one_day( $launch );
+		$message['attachments'][0]['pretext'] = sprintf( '%s Launch Notice', '5 Minute' );
+		$message['attachments'][0]['color']   = '#268e6d';
 		if ( isset( $this->launch->vidURLs[0] ) ) {
 			$message['attachments'][0]['actions'] = [
 				'type' => 'button',
@@ -115,18 +130,28 @@ class Retriever {
 		return $message;
 	}
 
+	private function general_launch_info( $launch ) {
+		$message = $this->build_message_one_day( $launch );
+		$message['attachments'][0]['pretext'] = sprintf( '%s Launch Notice', 'General' );
+		$message['attachments'][0]['color']   = '#9b9e63';
+
+		return $message;
+	}
+
 	private function daily_update( $launches ) {
-		$message = '';
+		$message = '*Next 5 Scheduled Launches*' . PHP_EOL;
 		foreach ( $launches->launches as $launch ) {
-			$message .= sprintf( '%s From %s on a %s%s',
+			$message .= sprintf( '%s From %s at <!date^%s^{date_num} {time}|%s>%s',
 				$launch->name,
 				$launch->location->name,
-				$launch->rocket->name,
+				$launch->netstamp,
+				$launch->net,
 				PHP_EOL
 			);
+
 		}
 
-		$this->messages->alert( $message );
+		$this->messages->alert( [ 'text' => $message, 'mrkdwn' => true ] );
 	}
 
 	public function add_interval( $schedules ) {

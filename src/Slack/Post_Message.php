@@ -21,7 +21,7 @@ class Post_Message {
 			]
 		);
 
-		error_log( $result, 1 );
+		error_log( print_r( $result, 1 ) );
 	}
 
 }

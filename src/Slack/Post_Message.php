@@ -11,13 +11,13 @@ class Post_Message {
 		wp_remote_post( self::ENDPOINT,
 			[
 				'headers' => [
-					'Content-type' => 'application/x-www-form-urlencoded',
+					'Content-type' => 'application/json',
 				],
-				'body'    => [
+				'body'    => json_encode( [
 					'token'   => $token,
 					'channel' => $channel,
 					$message,
-				],
+				] ),
 			]
 		);
 	}

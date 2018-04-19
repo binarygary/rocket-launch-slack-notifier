@@ -2,6 +2,7 @@
 
 namespace BinaryGary\Rocket\Endpoints;
 
+use BinaryGary\Rocket\Post_Types\Slack_Team;
 use BinaryGary\Rocket\Post_Types\Slack_URL;
 use BinaryGary\Rocket\Settings\Defaults;
 use BinaryGary\Rocket\Slack\Redirect_URI;
@@ -55,11 +56,18 @@ class OAuth extends Base {
 			die;
 		}
 
+		$team_id = $this->create_slack_team( $body );
+
+		$user_id = $this->user( $body );
+
 		$args = [
 			'post_content' => $body->incoming_webhook->url,
+			'post_author'  => $user_id,
 			'post_status'  => 'publish',
 			'post_type'    => Slack_URL::POST_TYPE,
+			'post_parent'  => $team_id,
 			'post_title'   => $body->incoming_webhook->channel_id,
+			'ID'           => $this->post_exists( $body->incoming_webhook->channel_id ),
 		];
 
 		$slack_url_id = wp_insert_post( $args );
@@ -69,6 +77,39 @@ class OAuth extends Base {
 		$this->message->send( $body->access_token, $body->incoming_webhook->channel_id, get_option( Defaults::SUCCESS_MESSAGE, 'Hallo!' ) );
 		$this->redirect_uri->success();
 		die;
+	}
+
+	private function post_exists( $title ) {
+		$post = get_page_by_title( $title, 'OBJECT', Slack_URL::POST_TYPE );
+		if ( isset( $post->ID ) ) {
+			return $post->ID;
+		}
+
+		return 0;
+	}
+
+	private function create_slack_team( $body ): array {
+		$args = [
+			'post_content' => $body->access_token,
+			'post_status'  => 'publish',
+			'post_type'    => Slack_Team::POST_TYPE,
+			'post_title'   => $body->team_id,
+			'ID'           => $this->post_exists( $body->team_id ),
+		];
+
+		return wp_insert_post( $args );
+	}
+
+	private function user( $body ) {
+		if ( username_exists( $body->user_id ) ) {
+			return username_exists( $body->user_id );
+		}
+
+		return wp_insert_user( [
+			'user_login' => $body->user_id,
+			'user_pass'  => null,
+		] );
+
 	}
 
 }

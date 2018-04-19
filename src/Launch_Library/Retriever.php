@@ -62,7 +62,8 @@ class Retriever {
 
 		foreach ( $this->range() as $frequency => $range ) {
 			if ( filter_var( $launch->netstamp - $this->timestamp, FILTER_VALIDATE_INT, [ 'options' => $range ] ) ) {
-				$message = $this->build_message_{$frequency}( $launch );
+				$method  = "build_message_{$frequency}";
+				$message = $this->$method( $launch );
 				$this->messages->alert( $message );
 			}
 		}

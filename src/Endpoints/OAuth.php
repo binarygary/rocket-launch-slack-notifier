@@ -60,18 +60,9 @@ class OAuth extends Base {
 
 		$user_id = $this->user( $body );
 
-		$args = [
-			'post_content' => $body->incoming_webhook->url,
-			'post_author'  => $user_id,
-			'post_status'  => 'publish',
-			'post_type'    => Slack_URL::POST_TYPE,
-			'post_parent'  => $team_id,
-			'post_title'   => $body->incoming_webhook->channel_id,
-			'ID'           => $this->post_exists( $body->incoming_webhook->channel_id ),
-		];
+		$slack_url_id = $this->create_slack_url( $body, $user_id, $team_id );
 
-		$slack_url_id = wp_insert_post( $args );
-
+		// @TODO: refactor this out...update Post_Message
 		update_post_meta( $slack_url_id, 'response', $body );
 
 		$this->message->send( $body->access_token, $body->incoming_webhook->channel_id, get_option( Defaults::SUCCESS_MESSAGE, 'Hallo!' ) );
@@ -110,6 +101,27 @@ class OAuth extends Base {
 			'user_pass'  => null,
 		] );
 
+	}
+
+	/**
+	 * @param $body
+	 * @param $user_id
+	 * @param $team_id
+	 *
+	 * @return int|\WP_Error
+	 */
+	private function create_slack_url( $body, $user_id, $team_id ) {
+		$args = [
+			'post_content' => $body->incoming_webhook->url,
+			'post_author'  => $user_id,
+			'post_status'  => 'publish',
+			'post_type'    => Slack_URL::POST_TYPE,
+			'post_parent'  => $team_id,
+			'post_title'   => $body->incoming_webhook->channel_id,
+			'ID'           => $this->post_exists( $body->incoming_webhook->channel_id ),
+		];
+
+		return wp_insert_post( $args );
 	}
 
 }

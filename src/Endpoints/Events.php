@@ -17,11 +17,9 @@ class Events extends Base {
 		return self::ENDPOINT;
 	}
 
-	public function process() {
-		$body = json_decode( $_POST['body'] );
-
-		if ( isset( $body->challenge ) ) {
-			echo $body->challenge;
+	public function process( $data ) {
+		if ( isset( $data->challenge ) ) {
+			echo $data->challenge;
 			die;
 		}
 	}

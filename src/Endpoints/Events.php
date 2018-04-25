@@ -18,7 +18,8 @@ class Events extends Base {
 	}
 
 	public function process( $data ) {
-		if ( isset( $data->challenge ) ) {
+
+		if ( 'url_verification' === $data->type ) {
 			echo $data->challenge;
 			die;
 		}

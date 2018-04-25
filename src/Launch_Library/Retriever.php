@@ -51,6 +51,7 @@ class Retriever {
 			}
 		}
 
+		// @TODO: refactor this to handle on a per
 		if ( $this->timestamp - get_option( self::DAILY_UPDATE, 0 ) > DAY_IN_SECONDS ) {
 			$this->daily_update( $launches );
 			update_option( self::DAILY_UPDATE, $this->timestamp, false );

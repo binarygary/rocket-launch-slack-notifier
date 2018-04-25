@@ -18,8 +18,8 @@ class Endpoints_Provider implements ServiceProviderInterface {
 			return new OAuth( $container[ Slack_Provider::POST_MESSAGE ], $container[ Slack_Provider::REDIRECT_URI ] );
 		};
 
-		$container[ self::ENDPOINTS_EVENTS ] = function () {
-			return new Events();
+		$container[ self::ENDPOINTS_EVENTS ] = function () use ( $container ) {
+			return new Events( $container[ Slack_Provider::POST_MESSAGE ] );
 		};
 
 		add_action( 'rest_api_init', function () use ( $container ) {

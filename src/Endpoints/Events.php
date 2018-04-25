@@ -18,8 +18,10 @@ class Events extends Base {
 	}
 
 	public function process() {
-		if ( isset( $_POST['challenge'] ) ) {
-			echo $_POST['challenge'];
+		$body = json_decode( $_POST['body'] );
+
+		if ( isset( $body->challenge ) ) {
+			echo $body->challenge;
 			die;
 		}
 	}

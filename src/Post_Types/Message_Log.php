@@ -13,7 +13,8 @@ class Message_Log extends Post_Type {
 
 	public function args() {
 		return [
-			'public' => false,
+			'public'  => false,
+			'show_ui' => true,
 		];
 	}
 

@@ -133,7 +133,7 @@ class Retriever {
 	}
 
 	private function general_launch_info( $launch ) {
-		$message = $this->build_message_one_day( $launch );
+		$message = $this->build_message_five_minute( $launch );
 		$message['attachments'][0]['pretext'] = sprintf( '%s Launch Notice', 'General' );
 		$message['attachments'][0]['color']   = '#9b9e63';
 

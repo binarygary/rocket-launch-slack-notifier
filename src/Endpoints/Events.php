@@ -17,10 +17,11 @@ class Events extends Base {
 		return self::ENDPOINT;
 	}
 
-	public function process( $data ) {
+	public function process( \WP_REST_Request $data ) {
+		$body = $data->get_body();
 
-		if ( 'url_verification' === $data->type ) {
-			echo $data->challenge;
+		if ( 'url_verification' === $body['type'] ) {
+			print_r( $body );
 			die;
 		}
 	}

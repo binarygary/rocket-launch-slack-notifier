@@ -146,7 +146,7 @@ class Retriever {
 			$message .= sprintf( '%s From %s at %s|%s>%s',
 				$launch->name,
 				$launch->location->name,
-				$this->time( strtotime( $launch->isonet, $launch->status ) ),
+				$this->time( strtotime( $launch->isonet) , $launch->status ),
 				$launch->net,
 				PHP_EOL
 			);

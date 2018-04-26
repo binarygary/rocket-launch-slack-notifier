@@ -2,6 +2,8 @@
 
 namespace BinaryGary\Rocket\Endpoints;
 
+use BinaryGary\Rocket\Post_Types\Slack_URL;
+
 class Events extends Base {
 
 	const ENDPOINT = 'event';
@@ -26,7 +28,7 @@ class Events extends Base {
 		}
 
 		if ( 'event_callback' === $body->type ) {
-			$this->message->send( $body->token, $body->event->channel, $this->demo() );
+			$this->message->send( $this->get_token( $body->team_id ), $body->event->channel, $this->demo() );
 		}
 	}
 
@@ -34,6 +36,19 @@ class Events extends Base {
 		return [
 			'text' => 'this is a test message',
 		];
+	}
+
+	private function get_token( $team_id ) {
+		$hooks = new \WP_Query( [
+			'post_type'      => Slack_URL::POST_TYPE,
+			'posts_per_page' => 1,
+			'post_statue'    => 'publish',
+			'post_title'     => $team_id,
+		] );
+
+		$body = get_post_meta( $hooks->posts[]->ID, 'response', true );
+
+		return $body->access_token;
 	}
 
 }

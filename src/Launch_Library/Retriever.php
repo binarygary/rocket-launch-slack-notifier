@@ -121,7 +121,7 @@ class Retriever {
 		$message = $this->build_message_one_day( $launch );
 		$message['attachments'][0]['pretext'] = sprintf( '%s Launch Notice', '5 Minute' );
 		$message['attachments'][0]['color']   = '#268e6d';
-		if ( isset( $this->launch->vidURLs[0] ) ) {
+		if ( isset( $launch->vidURLs[0] ) ) {
 			$message['attachments'][0]['actions'] = [
 				'type' => 'button',
 				'text' => 'Live Launch Feed :rocket:',

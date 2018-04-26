@@ -18,9 +18,9 @@ class Events extends Base {
 	}
 
 	public function process( \WP_REST_Request $data ) {
-		$body = $data->get_body();
+		$body = json_decode( $data->get_body() );
 
-		if ( 'url_verification' === $body['type'] ) {
+		if ( 'url_verification' === $body->type ) {
 			print_r( $body );
 			die;
 		}

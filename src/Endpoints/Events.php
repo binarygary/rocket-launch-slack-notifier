@@ -24,8 +24,16 @@ class Events extends Base {
 			print_r( $body );
 			die;
 		}
+
+		if ( 'event_callback' === $body->type ) {
+			$this->message->send( $body->token, $body->event->channel, $this->demo() );
+		}
 	}
 
-
+	private function demo() {
+		return [
+			'text' => 'this is a test message',
+		];
+	}
 
 }

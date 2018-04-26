@@ -16,6 +16,9 @@ class Message_Log extends Post_Type {
 			'public'       => false,
 			'show_ui'      => true,
 			'show_in_menu' => true,
+			'labels'       => [
+				'menu_name' => __( 'Slack Messages', 'tribe' ),
+			],
 		];
 	}
 

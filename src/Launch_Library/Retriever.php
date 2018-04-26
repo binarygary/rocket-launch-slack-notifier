@@ -143,10 +143,10 @@ class Retriever {
 	private function daily_update( $launches ) {
 		$message = '*Next 5 Scheduled Launches*' . PHP_EOL;
 		foreach ( $launches->launches as $launch ) {
-			$message .= sprintf( '%s From %s at <!date^%s^{date_num} {time}|%s>%s',
+			$message .= sprintf( '%s From %s at %s|%s>%s',
 				$launch->name,
 				$launch->location->name,
-				strtotime( $launch->isonet ),
+				$this->time( strtotime( $launch->isonet, $launch->status ) ),
 				$launch->net,
 				PHP_EOL
 			);
@@ -154,6 +154,14 @@ class Retriever {
 		}
 
 		$this->messages->alert( [ 'text' => $message, 'mrkdwn' => true ] );
+	}
+
+	private function time ( $time, $status ) {
+		if ( 1 != $status ) {
+			return sprintf( '<!date^%s^{date_num}', $time );
+		}
+
+		return sprintf( '<!date^%s^{date_num} {time}', $time );
 	}
 
 	public function add_interval( $schedules ) {

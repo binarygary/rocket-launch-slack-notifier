@@ -23,7 +23,6 @@ class Launch {
 		return [
 			$this->launch_name,
 			$this->vehicle,
-			$this->launch_pad,
 			$this->isonet,
 			$this->net,
 		];
@@ -40,7 +39,7 @@ class Launch {
 	}
 
 	private function setup_launch( $launch ) {
-		isset( $launch->name ) ? $this->set( 'name', $launch->name ) : null;
+		isset( $launch->name ) ? $this->set( 'launch_name', $launch->name ) : null;
 		isset( $launch->rocket->name ) ? $this->set( 'vehicle', $launch->rocket->name ) : null;
 		isset( $launch->location->nam ) ? $this->set( 'launch_pad', $launch->location->name ) : null;
 		isset( $launch->missions[0]->description ) ? $this->set( 'description', $launch->missions[0]->description ) : null;

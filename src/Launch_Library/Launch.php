@@ -21,10 +21,10 @@ class Launch {
 
 	protected function required_fields() {
 		return [
-			$this->launch_name,
-			$this->vehicle,
-			$this->isonet,
-			$this->net,
+			'launch_name',
+			'vehicle',
+			'isonet',
+			'net',
 		];
 	}
 

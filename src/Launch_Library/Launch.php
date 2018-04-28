@@ -52,7 +52,7 @@ class Launch {
 
 	public function message() {
 		if ( ! $this->required_fields_set() ) {
-			throw new \Exception( 'Required params were not met' );
+			throw new \Exception( 'Required params were not met' . print_r( $this ) );
 		}
 
 		$message['attachments'][0] = [

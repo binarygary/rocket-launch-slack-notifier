@@ -37,7 +37,7 @@ abstract class Event {
 		return add_query_arg( $params, self::ENDPOINT );
 	}
 
-	public function get_launches( $params = [] ): array {
+	public function get_launches( $params = [] ) {
 		$result = wp_remote_get( $this->setup_endpoint( $params ) );
 
 		return json_decode( $result['body'] );

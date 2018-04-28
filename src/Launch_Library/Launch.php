@@ -41,7 +41,7 @@ class Launch {
 	private function setup_launch( $launch ) {
 		isset( $launch->name ) ? $this->set( 'launch_name', $launch->name ) : null;
 		isset( $launch->rocket->name ) ? $this->set( 'vehicle', $launch->rocket->name ) : null;
-		isset( $launch->location->nam ) ? $this->set( 'launch_pad', $launch->location->name ) : null;
+		isset( $launch->location->name ) ? $this->set( 'launch_pad', $launch->location->name ) : null;
 		isset( $launch->missions[0]->description ) ? $this->set( 'description', $launch->missions[0]->description ) : null;
 		isset( $launch->netstamp ) ? $this->set( 'netstamp', $launch->netstamp ) : null;
 		isset( $launch->isonet ) ? $this->set( 'isonet', $launch->isonet ) : null;

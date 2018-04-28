@@ -16,10 +16,16 @@ class Retriever {
 	 */
 	protected $messages;
 
+	/**
+	 * @var Launch
+	 */
+	protected $launch;
+
 	protected $timestamp;
 
-	public function __construct( Webhooks $webhooks ) {
+	public function __construct( Webhooks $webhooks, Launch $launch ) {
 		$this->messages  = $webhooks;
+		$this->launch    = $launch;
 		$this->timestamp = time();
 	}
 
@@ -72,64 +78,28 @@ class Retriever {
 	}
 
 	private function build_message_one_day( $launch ) {
-		$message['attachments'][0] = [
-			'pretext' => sprintf( '%s Launch Notice', '24 Hour' ),
-			'color'   => '#42f4bc',
-			'title'   => $launch->name,
-			'fields'  => [
-				[
-					'title' => 'Net Launch',
-					'value' => sprintf( '<!date^%s^{date_num} {time}|%s>', $launch->netstamp, $launch->net ),
-					'short' => false,
-				],
-				[
-					'title' => 'Vehicle',
-					'value' => $launch->rocket->name,
-					'short' => false,
-				],
-				[
-					'title' => 'Launch Pad',
-					'value' => $launch->location->name,
-					'short' => false,
-				],
-			],
-		];
+		$this->launch->set( 'title', sprintf( '%s Launch Notice', '24 Hour' ) );
+		$this->launch->set( 'color', '#42f4bc' );
+		$this->launch->set( 'launch', $launch );
 
-		if ( ! ( $launch->netstamp ) ) {
-			$message['attachments'][0]['fields'][0] = [
-				'title' => 'Expected Launch Date',
-				'value' => sprintf( '<!date^%s^{date_num}|%s>', strtotime( $launch->isonet ), $launch->net ),
-				'short' => false,
-			];
-		}
-
-		if ( isset( $launch->missions[0]->description ) ) {
-			$message['attachments'][0]['text'] = $launch->missions[0]->description;
-		}
-
-		return $message;
+		return $this->launch->message();
 	}
 
 	private function build_message_one_hour( $launch ) {
-		$message = $this->build_message_one_day( $launch );
-		$message['attachments'][0]['pretext'] = sprintf( '%s Launch Notice', '1 Hour' );
-		$message['attachments'][0]['color']   = '#35c496';
-		return $message;
+		$this->launch->set( 'title', sprintf( '%s Launch Notice', '1 Hour' ) );
+		$this->launch->set( 'color', '#35c496' );
+		$this->launch->set( 'launch', $launch );
+
+		return $this->launch->message();
 	}
 
 	private function build_message_five_minute( $launch ) {
-		$message = $this->build_message_one_day( $launch );
-		$message['attachments'][0]['pretext'] = sprintf( '%s Launch Notice', '5 Minute' );
-		$message['attachments'][0]['color']   = '#268e6d';
-		if ( isset( $launch->vidURLs[0] ) ) {
-			$message['attachments'][0]['actions'] = [
-				'type' => 'button',
-				'text' => 'Live Launch Feed :rocket:',
-				'url'  => $launch->vidURLs[0],
-			];
-		}
+		$this->launch->set( 'title', sprintf( '%s Launch Notice', '5 Minute' ) );
+		$this->launch->set( 'color', '#268e6d' );
+		$this->launch->set( 'video_button', 'Live Launch Feed :rocket:' );
+		$this->launch->set( 'launch', $launch );
 
-		return $message;
+		return $this->launch->message();
 	}
 
 	private function general_launch_info( $launch ) {

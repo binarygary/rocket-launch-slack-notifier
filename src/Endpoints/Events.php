@@ -2,11 +2,20 @@
 
 namespace BinaryGary\Rocket\Endpoints;
 
+use BinaryGary\Rocket\Endpoints\Events\Collection;
 use BinaryGary\Rocket\Post_Types\Slack_URL;
+use BinaryGary\Rocket\Slack\Post_Message;
 
 class Events extends Base {
 
 	const ENDPOINT = 'event';
+
+	protected $collection;
+
+	public function __construct( Post_Message $message, Collection $collection ) {
+		$this->collection = $collection;
+		parent::__construct( $message );
+	}
 
 	public function register() {
 		register_rest_route( self::PATH, self::ENDPOINT, [
@@ -28,7 +37,9 @@ class Events extends Base {
 		}
 
 		if ( 'event_callback' === $body->type ) {
-			$this->message->send( $this->get_token( $body->team_id ), $body->event->channel, $this->demo() );
+			foreach ( $this->collection->events() as $event ) {
+				$this->message->send( $this->get_token( $body->team_id ), $body->event->channel, $event->process() );
+			}
 		}
 	}
 

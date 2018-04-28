@@ -3,6 +3,7 @@
 namespace BinaryGary\Rocket\Service_Providers;
 
 
+use BinaryGary\Rocket\Launch_Library\Launch;
 use BinaryGary\Rocket\Launch_Library\Retriever;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
@@ -10,10 +11,15 @@ use Pimple\ServiceProviderInterface;
 class Launch_Library_Provider implements ServiceProviderInterface {
 
 	const RETRIEVER = 'launch_library.retriever';
+	const LAUNCH    = 'launch_library.launch';
 
 	public function register( Container $container ) {
 		$container[ self::RETRIEVER ] = function () use ( $container ) {
-			return new Retriever( $container[ Slack_Provider::WEBHOOKS ] );
+			return new Retriever( $container[ Slack_Provider::WEBHOOKS ], $container[ self::LAUNCH ] );
+		};
+
+		$container[ self::LAUNCH ] = function() {
+			return new Launch();
 		};
 
 		add_action( 'init', function() {

@@ -103,7 +103,7 @@ class Launch {
 
 	private function required_fields_set() {
 		foreach ( $this->required_fields() as $field ) {
-			if ( null === $this->$field ) {
+			if ( ! isset( $this->$field ) ) {
 				return false;
 			}
 		}

@@ -40,7 +40,7 @@ class Events extends Base {
 			$shortest = - 1;
 
 			foreach ( $this->collection->events() as $key => $event ) {
-				$lev = levenshtein( $body->event->text, $key );
+				$lev = similar_text( $body->event->text, $key );
 				error_log( $key . ' ' . $lev );
 				if ( $lev <= $shortest || $shortest < 0 ) {
 					// set the closest match, and shortest distance

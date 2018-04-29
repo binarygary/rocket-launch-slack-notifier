@@ -37,11 +37,15 @@ class Events extends Base {
 		}
 
 		if ( 'event_callback' === $body->type ) {
-			foreach ( $this->collection->events() as $event ) {
-				$event->process();
-				error_log( print_r( $event, 1 ) );
-				//$this->message->send( $this->get_token( $body->team_id ), $body->event->channel, $event->process() );
-			}
+			$this->message->send( $this->get_token( $body->team_id ), $body->event->channel, [
+				'text' => print_r( $this->collection->events(), 1 ),
+			] );
+
+//			foreach ( $this->collection->events() as $event ) {
+//				$event->process();
+//				error_log( print_r( $event, 1 ) );
+//				//$this->message->send( $this->get_token( $body->team_id ), $body->event->channel, $event->process() );
+//			}
 		}
 	}
 

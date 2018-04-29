@@ -37,27 +37,27 @@ class Endpoints_Provider implements ServiceProviderInterface {
 			$result    = wp_remote_get( self::PROVIDERS_LAUNCHPOINT );
 			$providers = json_decode( $result['body'] );
 			foreach ( $providers->agencies as $agency ) {
-				$container[ sanitize_title( $agency->name ) ] = function () use ( $container, $agency ) {
+				$container[ 'provider' . sanitize_title( $agency->name ) ] = function () use ( $container, $agency ) {
 					return new Events\Launch( $container[ Launch_Library_Provider::LAUNCH ], [
 						'term'          => $agency->name,
 						'request'       => 'lsp',
 						'request_value' => $agency->id,
 					] );
 				};
-				$container[ self::ENDPOINT_EVENTS_COLLECTION ]->add( $container[ sanitize_title( $agency->name ) ] );
+				$container[ self::ENDPOINT_EVENTS_COLLECTION ]->add( $container[ 'provider' . sanitize_title( $agency->name ) ] );
 			}
 
 			$result    = wp_remote_get( self::LOCATION_LAUNCHPOINT );
 			$locations = json_decode( $result['body'] );
 			foreach ( $locations->locations as $location ) {
-				$container[ sanitize_title( $location->name ) ] = function () use ( $container, $location ) {
+				$container[ 'location' . sanitize_title( $location->name ) ] = function () use ( $container, $location ) {
 					return new Events\Launch( $container[ Launch_Library_Provider::LAUNCH ], [
 						'term'          => $location->name,
 						'request'       => 'locationid',
 						'request_value' => $location->id,
 					] );
 				};
-				$container[ self::ENDPOINT_EVENTS_COLLECTION ]->add( $container[ sanitize_title( $location->name ) ] );
+				$container[ self::ENDPOINT_EVENTS_COLLECTION ]->add( $container[ 'location' . sanitize_title( $location->name ) ] );
 			}
 
 			$container[ self::ENDPOINTS_OAUTH ]->register();

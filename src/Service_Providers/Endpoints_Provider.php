@@ -18,7 +18,7 @@ class Endpoints_Provider implements ServiceProviderInterface {
 	const ENDPOINT_EVENTS_SPACEX = 'endpoint.events.spacex';
 
 	const PROVIDERS_LAUNCHPOINT = 'https://launchlibrary.net/1.4/lsp?limit=100';
-	const LOCATION_LAUNCHPOINT  = 'https://launchlibrary.net/1.4/location?limit=100';
+	const LOCATION_LAUNCHPOINT  = 'https://launchlibrary.net/1.4/pad?limit=100';
 
 	public function register( Container $container ) {
 		$container[ self::ENDPOINTS_OAUTH ] = function () use ( $container ) {

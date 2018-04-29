@@ -37,9 +37,22 @@ class Events extends Base {
 		}
 
 		if ( 'event_callback' === $body->type ) {
-			foreach ( $this->collection->events() as $key => $event ) {
-				//$this->message->send( $this->get_token( $body->team_id ), $body->event->channel, $event->process() );
-			}
+			$this->message->send( $this->get_token( $body->team_id ), $body->event->channel, [
+				'event' => print_r( $body, 1 ),
+			] );
+
+//			$shortest = -1;
+//
+//			foreach ( $this->collection->events() as $key => $event ) {
+//				$lev = levenshtein($input, $key);
+//				if ($lev <= $shortest || $shortest < 0) {
+//					// set the closest match, and shortest distance
+//					$closest  = $word;
+//					$shortest = $lev;
+//				}
+//
+//				//$this->message->send( $this->get_token( $body->team_id ), $body->event->channel, $event->process() );
+//			}
 		}
 	}
 

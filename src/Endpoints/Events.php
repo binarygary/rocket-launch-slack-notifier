@@ -45,9 +45,9 @@ class Events extends Base {
 
 			$event_name = $process->extractOne( $body->event->text, array_keys( $this->collection->events() ) );
 
-			$event = $this->collection->get_event( $event_name );
+			//$event = $this->collection->get_event( $event_name );
 
-			$this->message->send( $this->get_token( $body->team_id ), $body->event->channel, $event->process() );
+			$this->message->send( $this->get_token( $body->team_id ), $body->event->channel, ['text'=>$event_name] );
 			die;
 		}
 	}

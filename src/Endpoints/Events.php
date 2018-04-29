@@ -37,9 +37,7 @@ class Events extends Base {
 		}
 
 		if ( 'event_callback' === $body->type ) {
-			$this->message->send( $this->get_token( $body->team_id ), $body->event->channel, [
-				'text' => print_r( $body, 1 ),
-			] );
+			error_log( print_r( $body, 1 ) );
 
 //			$shortest = -1;
 //

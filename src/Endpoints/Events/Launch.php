@@ -40,6 +40,10 @@ class Launch extends Event {
 
 			return $this->launch->message();
 		}
+
+		return [
+			'text' => sprintf( 'Sorry, could not find any %s launches', $this->term );
+		];
 	}
 
 }

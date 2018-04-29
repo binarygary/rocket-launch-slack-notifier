@@ -43,11 +43,15 @@ class Events extends Base {
 			$fuzz    = new Fuzz();
 			$process = new Process( $fuzz );
 
-			$event_name = $process->extractOne( $body->event->text, array_keys( $this->collection->events() ) );
+			$event_name = $process->extract( $body->event->text, array_keys( $this->collection->events() ) );
 
-			$event = $this->collection->get_event( $event_name[0] );
+			foreach ( $event_name as $events ) {
+				$event = $this->collection->get_event( $events[0] );
 
-			$this->message->send( $this->get_token( $body->team_id ), $body->event->channel, $event->process() );
+				$this->message->send( $this->get_token( $body->team_id ), $body->event->channel, $event->process() );
+
+			}
+
 			die;
 		}
 	}

@@ -50,9 +50,7 @@ class Events extends Base {
 
 			}
 
-			$this->message->send( $this->get_token( $body->team_id ), $body->event->channel, [
-				'text' => print_r( $closest, 1 ),
-			] );
+			$this->message->send( $this->get_token( $body->team_id ), $body->event->channel, $closest->process() );
 			die;
 		}
 	}

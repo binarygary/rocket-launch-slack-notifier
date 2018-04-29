@@ -5,6 +5,8 @@ namespace BinaryGary\Rocket\Endpoints;
 use BinaryGary\Rocket\Endpoints\Events\Collection;
 use BinaryGary\Rocket\Post_Types\Slack_URL;
 use BinaryGary\Rocket\Slack\Post_Message;
+use FuzzyWuzzy\Fuzz;
+use FuzzyWuzzy\Process;
 
 class Events extends Base {
 
@@ -37,20 +39,15 @@ class Events extends Base {
 		}
 
 		if ( 'event_callback' === $body->type ) {
-			$shortest = - 1;
 
-			foreach ( $this->collection->events() as $key => $event ) {
-				$lev = similar_text( $body->event->text, $key );
-				error_log( $key . ' ' . $lev );
-				if ( $lev <= $shortest || $shortest < 0 ) {
-					// set the closest match, and shortest distance
-					$closest  = $event;
-					$shortest = $lev;
-				}
+			$fuzz    = new Fuzz();
+			$process = new Process( $fuzz );
 
-			}
+			$event_name = $process->extractOne( $body->event->text, array_keys( $this->collection->events() ) );
 
-			$this->message->send( $this->get_token( $body->team_id ), $body->event->channel, $closest->process() );
+			$event = $this->collection->get_event( $event_name );
+
+			$this->message->send( $this->get_token( $body->team_id ), $body->event->channel, $event->process() );
 			die;
 		}
 	}

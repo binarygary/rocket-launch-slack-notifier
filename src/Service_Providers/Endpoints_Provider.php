@@ -44,7 +44,7 @@ class Endpoints_Provider implements ServiceProviderInterface {
 						'request_value' => $agency->id,
 					] );
 				};
-				$container[ self::ENDPOINT_EVENTS_COLLECTION ]->add( sanitize_title( $agency->name ) );
+				$container[ self::ENDPOINT_EVENTS_COLLECTION ]->add( $container[ sanitize_title( $agency->name ) ] );
 			}
 
 			$result    = wp_remote_get( self::LOCATION_LAUNCHPOINT );
@@ -57,7 +57,7 @@ class Endpoints_Provider implements ServiceProviderInterface {
 						'request_value' => $location->id,
 					] );
 				};
-				$container[ self::ENDPOINT_EVENTS_COLLECTION ]->add( sanitize_title( $location->name ) );
+				$container[ self::ENDPOINT_EVENTS_COLLECTION ]->add( $container[ sanitize_title( $location->name ) ] );
 			}
 
 			$container[ self::ENDPOINTS_OAUTH ]->register();

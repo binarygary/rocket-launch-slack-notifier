@@ -49,7 +49,7 @@ class Endpoints_Provider implements ServiceProviderInterface {
 
 			$result    = wp_remote_get( self::LOCATION_LAUNCHPOINT );
 			$locations = json_decode( $result['body'] );
-			foreach ( $locations->locations as $location ) {
+			foreach ( $locations->pads as $location ) {
 				$container[ 'location' . sanitize_title( $location->name ) ] = function () use ( $container, $location ) {
 					return new Events\Launch( $container[ Launch_Library_Provider::LAUNCH ], [
 						'term'          => $location->name,

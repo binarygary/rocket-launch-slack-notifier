@@ -41,6 +41,7 @@ class Events extends Base {
 
 			foreach ( $this->collection->events() as $key => $event ) {
 				$lev = levenshtein( $body->text, $key );
+				error_log( $key . ' ' . $lev );
 				if ( $lev <= $shortest || $shortest < 0 ) {
 					// set the closest match, and shortest distance
 					$closest  = $event;
@@ -49,10 +50,10 @@ class Events extends Base {
 
 			}
 
-			$this->message->send( $this->get_token( $body->team_id ), $body->event->channel, [
-				'text' => print_r( $closest, 1 ),
-			] );
-			die;
+//			$this->message->send( $this->get_token( $body->team_id ), $body->event->channel, [
+//				'text' => print_r( $closest, 1 ),
+//			] );
+//			die;
 		}
 	}
 

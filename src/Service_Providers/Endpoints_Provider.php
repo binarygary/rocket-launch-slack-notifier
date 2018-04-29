@@ -29,20 +29,6 @@ class Endpoints_Provider implements ServiceProviderInterface {
 			return new Events\Collection();
 		};
 
-
-		$events = [
-			self::ENDPOINT_EVENTS_SPACEX => Events\SpaceX::class,
-		];
-
-		foreach ( $events as $event => $class ) {
-			$container[ $event ] = function () use ( $container, $class ) {
-				return new $class( $container[ Launch_Library_Provider::LAUNCH ] );
-			};
-			add_action( 'init', function () use ( $container, $event ) {
-				$container[ self::ENDPOINT_EVENTS_COLLECTION ]->add( $container[ $event ] );
-			} );
-		}
-
 		$container[ self::ENDPOINTS_EVENTS ] = function () use ( $container ) {
 			return new Events( $container[ Slack_Provider::POST_MESSAGE ], $container[ self::ENDPOINT_EVENTS_COLLECTION ] );
 		};

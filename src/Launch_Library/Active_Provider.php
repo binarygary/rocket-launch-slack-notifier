@@ -41,9 +41,10 @@ class Active_Provider extends Active {
 	private function build_url() {
 		$url = add_query_arg( self::PROVIDER_ENDPIONT, [ self::LIMIT, self::LIMIT_COUNT ] );
 		foreach ( $this->active as $active ) {
-			$url = add_query_arg( self::PROVIDER_ENDPIONT, [ 'id', $active ] );
+			$url = add_query_arg( $url, [ 'id', $active ] );
 		}
 
+		error_log( $url );
 		return $url;
 	}
 

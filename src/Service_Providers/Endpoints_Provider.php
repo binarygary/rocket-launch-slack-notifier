@@ -44,7 +44,7 @@ class Endpoints_Provider implements ServiceProviderInterface {
 				$container[ $agency ] = function () use ( $container, $attributes ) {
 					return new Events\Launch( $container[ Launch_Library_Provider::LAUNCH ], $attributes );
 				};
-				$container[ self::ENDPOINT_EVENTS_COLLECTION ]->add( $agency );
+				$container[ self::ENDPOINT_EVENTS_COLLECTION ]->add( $container[ $agency ] );
 			}
 
 			$result    = wp_remote_get( self::LOCATION_LAUNCHPOINT );

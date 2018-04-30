@@ -5,6 +5,7 @@ namespace BinaryGary\Rocket\Service_Providers;
 
 use BinaryGary\Rocket\Endpoints\Events;
 use BinaryGary\Rocket\Endpoints\OAuth;
+use BinaryGary\Rocket\Launch_Library\Active_Pad;
 use BinaryGary\Rocket\Launch_Library\Active_Provider;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
@@ -19,8 +20,7 @@ class Endpoints_Provider implements ServiceProviderInterface {
 	const ENDPOINT_EVENTS_SPACEX = 'endpoint.events.spacex';
 
 	const ACTIVE_PROVIDERS = 'launch_library.active_provider';
-
-	const LOCATION_LAUNCHPOINT = 'https://launchlibrary.net/1.4/pad?limit=200';
+	const ACTIVE_PADS      = 'launch_library.active_pads';
 
 	public function register( Container $container ) {
 		$container[ self::ENDPOINTS_OAUTH ] = function () use ( $container ) {
@@ -39,6 +39,10 @@ class Endpoints_Provider implements ServiceProviderInterface {
 			return new Active_Provider();
 		};
 
+		$container[ self::ACTIVE_PADS ] = function () {
+			return new Active_Pad();
+		};
+
 		add_action( 'rest_api_init', function () use ( $container ) {
 			foreach ( $container[ self::ACTIVE_PROVIDERS ]->get_active() as $agency => $attributes ) {
 				$container[ $agency ] = function () use ( $container, $attributes ) {
@@ -47,17 +51,11 @@ class Endpoints_Provider implements ServiceProviderInterface {
 				$container[ self::ENDPOINT_EVENTS_COLLECTION ]->add( $container[ $agency ] );
 			}
 
-			$result    = wp_remote_get( self::LOCATION_LAUNCHPOINT );
-			$locations = json_decode( $result['body'] );
-			foreach ( $locations->pads as $location ) {
-				$container[ 'location' . sanitize_title( $location->name ) ] = function () use ( $container, $location ) {
-					return new Events\Launch( $container[ Launch_Library_Provider::LAUNCH ], [
-						'term'          => $location->name,
-						'request'       => 'locationid',
-						'request_value' => $location->id,
-					] );
+			foreach ( $container[ self::ACTIVE_PADS ]->get_active() as $pad => $attributes ) {
+				$container[ $pad ] = function () use ( $container, $attributes ) {
+					return new Events\Launch( $container[ Launch_Library_Provider::LAUNCH ], $attributes );
 				};
-				$container[ self::ENDPOINT_EVENTS_COLLECTION ]->add( $container[ 'location' . sanitize_title( $location->name ) ] );
+				$container[ self::ENDPOINT_EVENTS_COLLECTION ]->add( $container[ $pad ] );
 			}
 
 			$container[ self::ENDPOINTS_OAUTH ]->register();

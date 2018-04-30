@@ -40,7 +40,7 @@ class Endpoints_Provider implements ServiceProviderInterface {
 		};
 
 		add_action( 'rest_api_init', function () use ( $container ) {
-			foreach ( $container[ self::ACTIVE_PROVIDERS ]->get_active as $agency => $attributes ) {
+			foreach ( $container[ self::ACTIVE_PROVIDERS ]->get_active() as $agency => $attributes ) {
 				$container[ $agency ] = function () use ( $container, $attributes ) {
 					return new Events\Launch( $container[ Launch_Library_Provider::LAUNCH ], $attributes );
 				};

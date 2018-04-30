@@ -5,7 +5,7 @@ namespace BinaryGary\Rocket\Launch_Library;
 
 class Active_Provider extends Active {
 
-	const PROVIDER_ENDPIONT = 'https://launchlibrary.net/1.4/lsp';
+	const PROVIDER_ENDPOINT = 'https://launchlibrary.net/1.4/lsp';
 	const LIMIT             = 'limit';
 	const LIMIT_COUNT       = 100;
 
@@ -39,9 +39,9 @@ class Active_Provider extends Active {
 	}
 
 	private function build_url() {
-		$url = add_query_arg( self::PROVIDER_ENDPIONT, [ self::LIMIT, self::LIMIT_COUNT ] );
+		$url = add_query_arg( self::LIMIT, self::LIMIT_COUNT, self::PROVIDER_ENDPOINT );
 		foreach ( $this->active as $active ) {
-			$url = add_query_arg( $url, [ 'id', $active ] );
+			$url = add_query_arg( 'id', $active, $url );
 		}
 
 		error_log( $url );

@@ -5,6 +5,7 @@ namespace BinaryGary\Rocket\Service_Providers;
 
 use BinaryGary\Rocket\Endpoints\Events;
 use BinaryGary\Rocket\Endpoints\OAuth;
+use BinaryGary\Rocket\Launch_Library\Active_Provider;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
 
@@ -17,8 +18,9 @@ class Endpoints_Provider implements ServiceProviderInterface {
 
 	const ENDPOINT_EVENTS_SPACEX = 'endpoint.events.spacex';
 
-	const PROVIDERS_LAUNCHPOINT = 'https://launchlibrary.net/1.4/lsp?limit=100';
-	const LOCATION_LAUNCHPOINT  = 'https://launchlibrary.net/1.4/pad?limit=200';
+	const ACTIVE_PROVIDERS = 'launch_library.active_provider';
+
+	const LOCATION_LAUNCHPOINT = 'https://launchlibrary.net/1.4/pad?limit=200';
 
 	public function register( Container $container ) {
 		$container[ self::ENDPOINTS_OAUTH ] = function () use ( $container ) {
@@ -33,18 +35,16 @@ class Endpoints_Provider implements ServiceProviderInterface {
 			return new Events( $container[ Slack_Provider::POST_MESSAGE ], $container[ self::ENDPOINT_EVENTS_COLLECTION ] );
 		};
 
+		$container[ self::ACTIVE_PROVIDERS ] = function () {
+			return new Active_Provider();
+		};
+
 		add_action( 'rest_api_init', function () use ( $container ) {
-			$result    = wp_remote_get( self::PROVIDERS_LAUNCHPOINT );
-			$providers = json_decode( $result['body'] );
-			foreach ( $providers->agencies as $agency ) {
-				$container[ 'provider' . sanitize_title( $agency->name ) ] = function () use ( $container, $agency ) {
-					return new Events\Launch( $container[ Launch_Library_Provider::LAUNCH ], [
-						'term'          => $agency->name,
-						'request'       => 'lsp',
-						'request_value' => $agency->id,
-					] );
+			foreach ( $container[ self::ACTIVE_PROVIDERS ]->get_active as $agency => $attributes ) {
+				$container[ $agency ] = function () use ( $container, $attributes ) {
+					return new Events\Launch( $container[ Launch_Library_Provider::LAUNCH ], $attributes );
 				};
-				$container[ self::ENDPOINT_EVENTS_COLLECTION ]->add( $container[ 'provider' . sanitize_title( $agency->name ) ] );
+				$container[ self::ENDPOINT_EVENTS_COLLECTION ]->add( $agency );
 			}
 
 			$result    = wp_remote_get( self::LOCATION_LAUNCHPOINT );

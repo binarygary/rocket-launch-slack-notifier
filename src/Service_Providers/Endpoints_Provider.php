@@ -16,6 +16,7 @@ class Endpoints_Provider implements ServiceProviderInterface {
 
 	const ENDPOINT_EVENTS_COLLECTION = 'endpoints.events.collection';
 	const ENDPOINTS_EVENTS           = 'endpoints.events';
+	const ENDPOINTS_EVENTS_HELP      = 'endpoints.events.help';
 
 	const ENDPOINT_EVENTS_SPACEX = 'endpoint.events.spacex';
 
@@ -31,8 +32,12 @@ class Endpoints_Provider implements ServiceProviderInterface {
 			return new Events\Collection();
 		};
 
+		$container[ self::ENDPOINTS_EVENTS_HELP ] = function () use ( $container ) {
+			return new Events\Help();
+		};
+
 		$container[ self::ENDPOINTS_EVENTS ] = function () use ( $container ) {
-			return new Events( $container[ Slack_Provider::POST_MESSAGE ], $container[ self::ENDPOINT_EVENTS_COLLECTION ] );
+			return new Events( $container[ Slack_Provider::POST_MESSAGE ], $container[ self::ENDPOINT_EVENTS_COLLECTION ], $container[ self::ENDPOINTS_EVENTS_HELP ] );
 		};
 
 		$container[ self::ACTIVE_PROVIDERS ] = function () {
@@ -51,12 +56,12 @@ class Endpoints_Provider implements ServiceProviderInterface {
 				$container[ self::ENDPOINT_EVENTS_COLLECTION ]->add( $container[ $agency ] );
 			}
 
-			foreach ( $container[ self::ACTIVE_PADS ]->get_active() as $pad => $attributes ) {
-				$container[ $pad ] = function () use ( $container, $attributes ) {
-					return new Events\Launch( $container[ Launch_Library_Provider::LAUNCH ], $attributes );
-				};
-				$container[ self::ENDPOINT_EVENTS_COLLECTION ]->add( $container[ $pad ] );
-			}
+//			foreach ( $container[ self::ACTIVE_PADS ]->get_active() as $pad => $attributes ) {
+//				$container[ $pad ] = function () use ( $container, $attributes ) {
+//					return new Events\Launch( $container[ Launch_Library_Provider::LAUNCH ], $attributes );
+//				};
+//				$container[ self::ENDPOINT_EVENTS_COLLECTION ]->add( $container[ $pad ] );
+//			}
 
 			$container[ self::ENDPOINTS_OAUTH ]->register();
 			$container[ self::ENDPOINTS_EVENTS ]->register();

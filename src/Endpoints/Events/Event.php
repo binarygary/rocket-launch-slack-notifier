@@ -5,7 +5,7 @@ namespace BinaryGary\Rocket\Endpoints\Events;
 use BinaryGary\Rocket\Launch_Library\Launch;
 use function Sodium\add;
 
-abstract class Event {
+abstract class Event extends Command {
 
 	const ENDPOINT = 'https://launchlibrary.net/1.4/launch';
 
@@ -19,8 +19,6 @@ abstract class Event {
 	}
 
 	abstract public function get_keyword();
-
-	abstract public function process(): array;
 
 	abstract public function query_name();
 

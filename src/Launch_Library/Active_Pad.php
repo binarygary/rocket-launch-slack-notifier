@@ -13,7 +13,7 @@ class Active_Pad extends Active {
 	const PAD_ENPOINT = 'https://launchlibrary.net/1.4/pad';
 
 	public function get_active() {
-		$provider_data = get_transient( self::ACTIVE_PROVIDER_TRANSIENT );
+		$provider_data = get_transient( self::PAD_TRANSIENT );
 		if ( $provider_data ) {
 			return $provider_data;
 		}
@@ -23,6 +23,8 @@ class Active_Pad extends Active {
 				$this->active[] = $pad->id;
 			}
 		}
+
+
 	}
 
 	private function build_url() {

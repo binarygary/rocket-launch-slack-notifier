@@ -3,6 +3,7 @@
 namespace BinaryGary\Rocket\Endpoints;
 
 use BinaryGary\Rocket\Endpoints\Events\Collection;
+use BinaryGary\Rocket\Endpoints\Events\Help;
 use BinaryGary\Rocket\Post_Types\Slack_URL;
 use BinaryGary\Rocket\Slack\Post_Message;
 use FuzzyWuzzy\Fuzz;
@@ -13,9 +14,11 @@ class Events extends Base {
 	const ENDPOINT = 'event';
 
 	protected $collection;
+	protected $help;
 
-	public function __construct( Post_Message $message, Collection $collection ) {
+	public function __construct( Post_Message $message, Collection $collection, Help $help ) {
 		$this->collection = $collection;
+		$this->help       = $help;
 		parent::__construct( $message );
 	}
 
@@ -40,26 +43,33 @@ class Events extends Base {
 
 		if ( 'event_callback' === $body->type ) {
 
-			$fuzz    = new Fuzz();
-			$process = new Process( $fuzz );
+			$command = explode( ' ', $body->event->text );
 
-			$event_name = $process->extract( $body->event->text, array_keys( $this->collection->events() ) );
-
-			foreach ( $event_name as $events ) {
-				$event = $this->collection->get_event( $events[0] );
-
-				$this->message->send( $this->get_token( $body->team_id ), $body->event->channel, $event->process() );
-
+			if ( ! in_array( $command[1], $this->help->get_commands() ) ) {
+				$this->message->send( $this->get_token( $body->team_id ), $body->event->channel, $this->help->process() );
+				die;
 			}
+
+			if ( 'launch' == $command[1] ) {
+				echo print_r( $this->collection->events(), 1);
+				die;
+			}
+
+
+//			$fuzz    = new Fuzz();
+//			$process = new Process( $fuzz );
+//
+//			$event_name = $process->extract( $body->event->text, array_keys( $this->collection->events() ) );
+//
+//			foreach ( $event_name as $events ) {
+//				$event = $this->collection->get_event( $events[0] );
+//
+//				$this->message->send( $this->get_token( $body->team_id ), $body->event->channel, $event->process() );
+//
+//			}
 
 			die;
 		}
-	}
-
-	private function demo() {
-		return [
-			'text' => 'this is a test message',
-		];
 	}
 
 	private function get_token( $team_id ) {

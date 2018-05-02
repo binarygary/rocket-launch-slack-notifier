@@ -7,8 +7,6 @@ use BinaryGary\Rocket\Launch_Library\Launch as Launch_Message;
 
 class Launch extends Event {
 
-	const KEYWORD = 'launch';
-
 	protected $term;
 	protected $request;
 	protected $request_value;
@@ -21,7 +19,7 @@ class Launch extends Event {
 	}
 
 	public function get_keyword() {
-		return self::KEYWORD . ' ' . $this->term;
+		return $this->term;
 	}
 
 	public function query_name() {

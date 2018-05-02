@@ -14,10 +14,10 @@ class Active_Provider extends Active {
 	public function get_active() {
 		$provider_data = get_transient( self::ACTIVE_PROVIDER_TRANSIENT );
 		if ( $provider_data ) {
-			return $provider_data;
+			//return $provider_data;
 		}
 
-		foreach ( $this->launches as $launch ) {
+		foreach ( $this->get_launches() as $launch ) {
 			$this->active[] = $launch->lsp->id;
 		}
 
@@ -26,7 +26,7 @@ class Active_Provider extends Active {
 
 		$provider_data = [];
 		foreach ( $providers->agencies as $agency ) {
-			$provider_data[ 'provider' . sanitize_title( $agency->name ) ] = [
+			$provider_data[ 'provider.' . sanitize_title( $agency->name ) ] = [
 				'term'          => $agency->name,
 				'request'       => 'lsp',
 				'request_value' => $agency->id,
@@ -40,11 +40,8 @@ class Active_Provider extends Active {
 
 	private function build_url() {
 		$url = add_query_arg( self::LIMIT, self::LIMIT_COUNT, self::PROVIDER_ENDPIONT );
-		foreach ( $this->active as $active ) {
-			$url = add_query_arg( 'id', $active, $url );
-		}
+		$url = add_query_arg( 'id', implode( ',', $this->active ), $url );
 
-		error_log( $url );
 		return $url;
 	}
 

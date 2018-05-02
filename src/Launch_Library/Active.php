@@ -14,7 +14,7 @@ abstract class Active {
 	public function get_launches() {
 		$this->launches = get_transient( self::NEXT_LAUNCHES_TRANSIENT );
 		if ( $this->launches ) {
-			return;
+			return $this->launches;
 		}
 
 		$result = wp_remote_get( self::ENDPOINT );
@@ -22,6 +22,8 @@ abstract class Active {
 		$this->launches = $launch_results->launches;
 
 		set_transient( self::NEXT_LAUNCHES_TRANSIENT, $this->launches, DAY_IN_SECONDS );
+
+		return $this->launches;
 	}
 
 	abstract public function get_active();

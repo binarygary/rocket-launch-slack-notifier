@@ -46,29 +46,7 @@ class Events extends Base {
 			$command = explode( ' ', $body->event->text );
 
 			if ( 'launch' == $command[1] ) {
-				// @TODO: figure out the aliasing.
-				$command_concat = strtolower( implode( ' ', array_slice( $command, 2 ) ) );
-				if ( array_key_exists( $command_concat, $this->collection->events() ) ) {
-					$event = $this->collection->get_event( $command_concat );
-					$this->message->send( $this->get_token( $body->team_id ), $body->event->channel, $event->process() );
-					die;
-				} else {
-					$fuzz    = new Fuzz();
-					$process = new Process( $fuzz );
-
-					$event_name = $process->extractOne( $command_concat, array_keys( $this->collection->events() ), null, [
-						$fuzz,
-						'ratio',
-					] );
-					if ( $event_name[1] > 50 ) {
-						$get_event = $this->collection->get_event( $event_name[0] );
-						$this->message->send( $this->get_token( $body->team_id ), $body->event->channel, $get_event->process() );
-						die;
-					}
-				}
-
-
-				$this->message->send( $this->get_token( $body->team_id ), $body->event->channel, $this->help->process() );
+				$this->message->send( $this->get_token( $body->team_id ), $body->event->channel, $this->collection->process_command( $command ) );
 				die;
 			}
 

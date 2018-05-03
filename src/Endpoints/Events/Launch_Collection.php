@@ -43,7 +43,7 @@ class Launch_Collection {
 			$fuzz,
 			'ratio',
 		] );
-		if ( $event_name[1] > 50 ) {
+		if ( $event_name[1] > 35 ) {
 			$get_event = $this->get_event( $event_name[0] );
 
 			return $get_event->process();

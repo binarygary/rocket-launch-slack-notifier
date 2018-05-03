@@ -10,7 +10,8 @@ class Active_Pad extends Active {
 	const LIMIT       = 'limit';
 	const LIMIT_COUNT = 200;
 
-	const PAD_ENPOINT = 'https://launchlibrary.net/1.4/pad';
+	const PAD_ENPOINT       = 'https://launchlibrary.net/1.4/pad';
+	const LOCATION_ENDPOINT = 'https://launchlibrary.net/1.4/location';
 
 	public function get_active() {
 		$pad_data = get_transient( self::PAD_TRANSIENT );
@@ -24,15 +25,35 @@ class Active_Pad extends Active {
 			}
 		}
 
-		$result    = wp_remote_get( $this->build_url() );
-		$pads = json_decode( $result['body'] );
+		$result = wp_remote_get( $this->build_url() );
+		$pads   = json_decode( $result['body'] );
 
-		$pad_data = [];
+		$pad_data     = [];
+		$location_ids = [];
 		foreach ( $pads->pads as $pad ) {
-			$pad_data[ 'pad.' . sanitize_title( $pad->name ) ] = [
-				'term'          => $pad->name,
-				'request'       => 'lsp',
-				'request_value' => $pad->id,
+			if ( 5 == $pad->locationid ) {
+				sleep(0);
+			}
+
+			$location_ids[ $pad->locationid ][] = $pad->id;
+		}
+
+		$result    = wp_remote_get( add_query_arg(
+			[
+				self::LIMIT => self::LIMIT_COUNT,
+			],
+			self::LOCATION_ENDPOINT
+		) );
+		$locations = json_decode( $result['body'] );
+
+		foreach ( $locations->locations as $location ) {
+			if ( ! array_key_exists( $location->id, $location_ids ) ) {
+				continue;
+			}
+			$pad_data[ 'pad.' . sanitize_title( $location->name ) ] = [
+				'term'          => $location->name,
+				'request'       => 'locationid',
+				'request_value' => implode( ',', $location_ids[ $location->id ] ),
 			];
 		}
 

@@ -3,7 +3,8 @@
   "description": "Send launch notices to slack.",
   "type": "wordpress-plugin",
   "require": {
-    "pimple/pimple": "^3.2"
+    "pimple/pimple": "^3.2",
+    "wyndow/fuzzywuzzy": "^0.6.0"
   },
   "authors": [
     {

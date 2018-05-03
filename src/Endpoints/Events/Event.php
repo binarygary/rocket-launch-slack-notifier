@@ -5,7 +5,7 @@ namespace BinaryGary\Rocket\Endpoints\Events;
 use BinaryGary\Rocket\Launch_Library\Launch;
 use function Sodium\add;
 
-abstract class Event {
+abstract class Event extends Command {
 
 	const ENDPOINT = 'https://launchlibrary.net/1.4/launch';
 
@@ -19,8 +19,6 @@ abstract class Event {
 	}
 
 	abstract public function get_keyword();
-
-	abstract public function process(): array;
 
 	abstract public function query_name();
 
@@ -40,6 +38,7 @@ abstract class Event {
 	public function get_launches( $params = [] ) {
 		$result = wp_remote_get( $this->setup_endpoint( $params ) );
 
+		error_log( $this->setup_endpoint( $params ) );
 		return json_decode( $result['body'] )->launches;
 	}
 

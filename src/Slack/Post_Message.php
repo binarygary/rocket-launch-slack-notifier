@@ -11,6 +11,11 @@ class Post_Message {
 
 	public function send( $token, $channel, $message ) {
 
+		if ( 'debug' === $channel ) {
+			print_r( $message );
+			return;
+		}
+
 		$message['channel'] = $channel;
 
 		$result = wp_remote_post( self::ENDPOINT,

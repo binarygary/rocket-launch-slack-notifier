@@ -49,8 +49,20 @@ class Launch_Collection {
 			return $get_event->process();
 		}
 
-		// return HELP!
+		return [
+			'text' => 'I did not understand what launch provider or launch pad you are looking for. Here is a list of words you can use after launch: ' . $this->get_keywords(),
+		];
 
+	}
+
+	private function get_keywords() {
+		$words = [];
+		foreach ( $this->events() as $event ) {
+			$words[] = $event->get_keyword();
+		}
+
+		asort( $words );
+		return '`' . implode( '` , `', $words ) . '`';
 	}
 
 }

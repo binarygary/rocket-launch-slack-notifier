@@ -13,25 +13,38 @@ class Active_Pad extends Active {
 	const PAD_ENPOINT = 'https://launchlibrary.net/1.4/pad';
 
 	public function get_active() {
-		$provider_data = get_transient( self::PAD_TRANSIENT );
-		if ( $provider_data ) {
-			return $provider_data;
+		$pad_data = get_transient( self::PAD_TRANSIENT );
+		if ( $pad_data ) {
+			//return $pad_data;
 		}
 
-		foreach ( $this->launches as $launch ) {
+		foreach ( $this->get_launches() as $launch ) {
 			foreach ( $launch->location->pads as $pad ) {
 				$this->active[] = $pad->id;
 			}
 		}
 
+		$result    = wp_remote_get( $this->build_url() );
+		$pads = json_decode( $result['body'] );
+
+		$pad_data = [];
+		foreach ( $pads->pads as $pad ) {
+			$pad_data[ 'pad.' . sanitize_title( $pad->name ) ] = [
+				'term'          => $pad->name,
+				'request'       => 'lsp',
+				'request_value' => $pad->id,
+			];
+		}
+
+		set_transient( self::PAD_TRANSIENT, $pad_data, DAY_IN_SECONDS );
+
+		return $pad_data;
 
 	}
 
 	private function build_url() {
 		$url = add_query_arg( self::LIMIT, self::LIMIT_COUNT, self::PAD_ENPOINT );
-		foreach ( $this->active as $active ) {
-			$url = add_query_arg( 'id', $active, $url );
-		}
+		$url = add_query_arg( 'id', implode( ',', array_unique( $this->active ) ), $url );
 
 		return $url;
 	}

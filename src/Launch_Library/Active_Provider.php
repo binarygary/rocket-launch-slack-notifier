@@ -14,11 +14,13 @@ class Active_Provider extends Active {
 	public function get_active() {
 		$provider_data = get_transient( self::ACTIVE_PROVIDER_TRANSIENT );
 		if ( $provider_data ) {
-			//return $provider_data;
+			return $provider_data;
 		}
 
 		foreach ( $this->get_launches() as $launch ) {
-			$this->active[] = $launch->lsp->id;
+			if ( isset( $launch->lsp->id ) ) {
+				$this->active[] = $launch->lsp->id;
+			}
 		}
 
 		$result    = wp_remote_get( $this->build_url() );
@@ -31,6 +33,12 @@ class Active_Provider extends Active {
 				'request'       => 'lsp',
 				'request_value' => $agency->id,
 			];
+
+			$provider_data[ 'provider.' . sanitize_title( $agency->abbrev ) ] = [
+				'term'          => $agency->abbrev,
+				'request'       => 'lsp',
+				'request_value' => $agency->id,
+			];
 		}
 
 		set_transient( self::ACTIVE_PROVIDER_TRANSIENT, $provider_data, DAY_IN_SECONDS );
@@ -40,7 +48,7 @@ class Active_Provider extends Active {
 
 	private function build_url() {
 		$url = add_query_arg( self::LIMIT, self::LIMIT_COUNT, self::PROVIDER_ENDPIONT );
-		$url = add_query_arg( 'id', implode( ',', $this->active ), $url );
+		$url = add_query_arg( 'id', implode( ',', array_unique( $this->active ) ), $url );
 
 		return $url;
 	}

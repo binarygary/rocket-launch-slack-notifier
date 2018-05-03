@@ -29,7 +29,7 @@ class Endpoints_Provider implements ServiceProviderInterface {
 		};
 
 		$container[ self::ENDPOINT_EVENTS_COLLECTION ] = function () use ( $container ) {
-			return new Events\Collection();
+			return new Events\Launch_Collection();
 		};
 
 		$container[ self::ENDPOINTS_EVENTS_HELP ] = function () use ( $container ) {
@@ -56,12 +56,12 @@ class Endpoints_Provider implements ServiceProviderInterface {
 				$container[ self::ENDPOINT_EVENTS_COLLECTION ]->add( $container[ $agency ] );
 			}
 
-//			foreach ( $container[ self::ACTIVE_PADS ]->get_active() as $pad => $attributes ) {
-//				$container[ $pad ] = function () use ( $container, $attributes ) {
-//					return new Events\Launch( $container[ Launch_Library_Provider::LAUNCH ], $attributes );
-//				};
-//				$container[ self::ENDPOINT_EVENTS_COLLECTION ]->add( $container[ $pad ] );
-//			}
+			foreach ( $container[ self::ACTIVE_PADS ]->get_active() as $pad => $attributes ) {
+				$container[ $pad ] = function () use ( $container, $attributes ) {
+					return new Events\Launch( $container[ Launch_Library_Provider::LAUNCH ], $attributes );
+				};
+				$container[ self::ENDPOINT_EVENTS_COLLECTION ]->add( $container[ $pad ] );
+			}
 
 			$container[ self::ENDPOINTS_OAUTH ]->register();
 			$container[ self::ENDPOINTS_EVENTS ]->register();

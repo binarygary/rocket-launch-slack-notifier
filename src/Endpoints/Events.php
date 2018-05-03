@@ -2,7 +2,7 @@
 
 namespace BinaryGary\Rocket\Endpoints;
 
-use BinaryGary\Rocket\Endpoints\Events\Collection;
+use BinaryGary\Rocket\Endpoints\Events\Launch_Collection;
 use BinaryGary\Rocket\Endpoints\Events\Help;
 use BinaryGary\Rocket\Post_Types\Slack_URL;
 use BinaryGary\Rocket\Slack\Post_Message;
@@ -16,7 +16,7 @@ class Events extends Base {
 	protected $collection;
 	protected $help;
 
-	public function __construct( Post_Message $message, Collection $collection, Help $help ) {
+	public function __construct( Post_Message $message, Launch_Collection $collection, Help $help ) {
 		$this->collection = $collection;
 		$this->help       = $help;
 		parent::__construct( $message );
@@ -45,28 +45,32 @@ class Events extends Base {
 
 			$command = explode( ' ', $body->event->text );
 
-			if ( ! in_array( $command[1], $this->help->get_commands() ) ) {
+			if ( 'launch' == $command[1] ) {
+				// @TODO: figure out the aliasing.
+				$command_concat = strtolower( implode( ' ', array_slice( $command, 2 ) ) );
+				if ( array_key_exists( $command_concat, $this->collection->events() ) ) {
+					$event = $this->collection->get_event( $command_concat );
+					$this->message->send( $this->get_token( $body->team_id ), $body->event->channel, $event->process() );
+					die;
+				} else {
+					$fuzz    = new Fuzz();
+					$process = new Process( $fuzz );
+
+					$event_name = $process->extractOne( $command_concat, array_keys( $this->collection->events() ), null, [
+						$fuzz,
+						'ratio',
+					] );
+					if ( $event_name[1] > 50 ) {
+						$get_event = $this->collection->get_event( $event_name[0] );
+						$this->message->send( $this->get_token( $body->team_id ), $body->event->channel, $get_event->process() );
+						die;
+					}
+				}
+
+
 				$this->message->send( $this->get_token( $body->team_id ), $body->event->channel, $this->help->process() );
 				die;
 			}
-
-			if ( 'launch' == $command[1] ) {
-				echo print_r( $this->collection->events(), 1);
-				die;
-			}
-
-
-//			$fuzz    = new Fuzz();
-//			$process = new Process( $fuzz );
-//
-//			$event_name = $process->extract( $body->event->text, array_keys( $this->collection->events() ) );
-//
-//			foreach ( $event_name as $events ) {
-//				$event = $this->collection->get_event( $events[0] );
-//
-//				$this->message->send( $this->get_token( $body->team_id ), $body->event->channel, $event->process() );
-//
-//			}
 
 			die;
 		}

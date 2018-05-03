@@ -2,12 +2,12 @@
 
 namespace BinaryGary\Rocket\Endpoints\Events;
 
-class Collection {
+class Launch_Collection {
 
 	private $events = [];
 
 	public function add( Event $event ) {
-		$this->events[ $event->get_keyword() ] = $event;
+		$this->events[ strtolower( $event->get_keyword() ) ] = $event;
 	}
 
 	public function events() {

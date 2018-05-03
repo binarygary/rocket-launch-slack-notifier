@@ -11,7 +11,7 @@ class Help extends Command {
 
 	public function process(): array {
 		return [
-			'text' => __( 'Sorry, we could not understand that search term', 'tribe' ),
+			'text' => __( 'Sorry, we could not understand that search term. Try typing "launch" followed by a launch agency or launch pad', 'tribe' ),
 		];
 	}
 

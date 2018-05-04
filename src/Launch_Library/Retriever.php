@@ -107,6 +107,8 @@ class Retriever {
 		$message['attachments'][0]['pretext'] = sprintf( '%s Launch Notice', 'General' );
 		$message['attachments'][0]['color']   = '#9b9e63';
 
+		update_option( self::LAST_NOTIFICATION_SENT, $message );
+
 		return $message;
 	}
 

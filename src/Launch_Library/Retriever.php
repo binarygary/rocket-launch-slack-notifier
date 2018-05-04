@@ -121,7 +121,7 @@ class Retriever {
 				$launch->net
 			);
 		}
-		$message = '</ul>';
+		$message .= '</ul>';
 
 		update_option( self::NEXT_5_SCHEDULED_LAUNCHES, $message );
 

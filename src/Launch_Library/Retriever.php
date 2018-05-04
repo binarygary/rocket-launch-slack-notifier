@@ -117,7 +117,7 @@ class Retriever {
 				$launch->name,
 				$launch->location->name,
 				$launch->net,
-				PHP_EOL
+				'<BR />'
 			);
 		}
 

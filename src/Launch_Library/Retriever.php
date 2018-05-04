@@ -11,6 +11,9 @@ class Retriever {
 
 	const DAILY_UPDATE = 'launch_daily_update';
 
+	const LAST_NOTIFICATION_SENT = 'last_notification_sent';
+	const NEXT_5_SCHEDULED_LAUNCHES = 'next_5_scheduled_launches';
+
 	/**
 	 * @var Post_Message
 	 */
@@ -57,11 +60,7 @@ class Retriever {
 			}
 		}
 
-		// @TODO: refactor this to handle on a per
-//		if ( $this->timestamp - get_option( self::DAILY_UPDATE, 0 ) > DAY_IN_SECONDS ) {
-//			$this->daily_update( $launches );
-//			update_option( self::DAILY_UPDATE, $this->timestamp, false );
-//		}
+		$this->next_launches_update( $launches );
 
 	}
 
@@ -72,6 +71,7 @@ class Retriever {
 				$method  = "build_message_{$frequency}";
 				$message = $this->$method( $launch );
 				$this->messages->alert( $message );
+				update_option( self::LAST_NOTIFICATION_SENT, $message );
 			}
 		}
 
@@ -110,20 +110,19 @@ class Retriever {
 		return $message;
 	}
 
-	private function daily_update( $launches ) {
-		$message = '*Next 5 Scheduled Launches*' . PHP_EOL;
+	private function next_launches_update( $launches ) {
+		$message = '';
 		foreach ( $launches->launches as $launch ) {
-			$message .= sprintf( '%s From %s at %s|%s>%s',
+			$message .= sprintf( '%s From %s at %s%s',
 				$launch->name,
 				$launch->location->name,
-				$this->time( strtotime( $launch->isonet) , $launch->status ),
 				$launch->net,
 				PHP_EOL
 			);
-
 		}
 
-		$this->messages->alert( [ 'text' => $message, 'mrkdwn' => true ] );
+		update_option( self::NEXT_5_SCHEDULED_LAUNCHES, $message );
+
 	}
 
 	private function time ( $time, $status ) {

@@ -113,15 +113,15 @@ class Retriever {
 	}
 
 	private function next_launches_update( $launches ) {
-		$message = '';
+		$message = '<ul>';
 		foreach ( $launches->launches as $launch ) {
-			$message .= sprintf( '%s From %s at %s%s',
+			$message .= sprintf( '<li>%s From %s at %s</li>',
 				$launch->name,
 				$launch->location->name,
-				$launch->net,
-				'<BR />'
+				$launch->net
 			);
 		}
+		$message = '</ul>';
 
 		update_option( self::NEXT_5_SCHEDULED_LAUNCHES, $message );
 

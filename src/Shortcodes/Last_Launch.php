@@ -12,7 +12,8 @@ class Last_Launch {
 	}
 
 	public function last_launch() {
-		return print_r( get_option( Retriever::LAST_NOTIFICATION_SENT ), 1 );
+		$launch = get_option( Retriever::LAST_NOTIFICATION_SENT );
+		return $launch['attachments']['0']['title'];
 	}
 
 }

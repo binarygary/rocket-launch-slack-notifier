@@ -109,10 +109,12 @@ class Launch {
 
 		return sprintf( '%s:
 		%s from %s.
+		%s
 		%s',
 			$this->title,
 			$this->launch_name,
 			$this->launch_pad,
+			$this->net,
 			$video
 		);
 	}

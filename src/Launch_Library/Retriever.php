@@ -56,7 +56,7 @@ class Retriever {
 		foreach ( $launches->launches as $launch ) {
 			$this->process_launch( $launch );
 			if ( defined( 'WP_CLI' ) && WP_CLI ) {
-				error_log( print_r( $this->general_launch_info( $launch ), 1 ) );
+				error_log( print_r( json_encode( $this->general_launch_info( $launch ) ), 1 ) );
 			}
 		}
 

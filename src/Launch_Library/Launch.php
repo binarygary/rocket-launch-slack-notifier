@@ -90,7 +90,7 @@ class Launch {
 		}
 
 		if ( isset( $this->video_button ) ) {
-			$message['attachments'][0]['actions'] = [
+			$message['attachments'][0]['actions'][0] = [
 				'type' => 'button',
 				'text' => $this->video_button,
 				'url'  => $this->video_url,

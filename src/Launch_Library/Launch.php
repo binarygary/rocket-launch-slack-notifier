@@ -49,7 +49,7 @@ class Launch {
 		isset( $launch->vidURLs[0] ) ? $this->set( 'video_url', $launch->vidURLs[0] ) : null;
 	}
 
-	public function message() {
+	public function message( $slack = true ) {
 		if ( ! $this->required_fields_set() ) {
 			throw new \Exception( 'Required params were not met' . print_r( $this, 1 ) );
 		}
@@ -89,7 +89,7 @@ class Launch {
 			$message['attachments'][0]['text'] = $this->description;
 		}
 
-		if ( isset( $this->video_button, $this->video_url )  ) {
+		if ( isset( $this->video_button, $this->video_url ) ) {
 			$message['attachments'][0]['actions'][0] = [
 				'type' => 'button',
 				'text' => $this->video_button,
@@ -97,7 +97,24 @@ class Launch {
 			];
 		}
 
-		return $message;
+		if ( $slack ) {
+			return $message;
+		}
+
+		return $this->simplify_message();
+	}
+
+	private function simplify_message() {
+		$video = isset( $this->video_button, $this->video_url ) ? 'webcast: ' . $this->video_url : '';
+
+		return sprintf( '%s:
+		%s from %s.
+		%s',
+			$this->title,
+			$this->launch_name,
+			$this->launch_pad,
+			$video
+		);
 	}
 
 	private function required_fields_set() {

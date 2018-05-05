@@ -24,7 +24,7 @@ class Slack_Provider implements ServiceProviderInterface {
 			return new Post_Message();
 		};
 
-		$container[ self::WEBHOOKS ] = function () use ( $container ){
+		$container[ self::WEBHOOKS ] = function () use ( $container ) {
 			return new Webhooks( $container[ self::POST_MESSAGE ] );
 		};
 	}

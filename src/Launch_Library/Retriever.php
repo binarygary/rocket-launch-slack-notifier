@@ -4,6 +4,7 @@ namespace BinaryGary\Rocket\Launch_Library;
 
 use BinaryGary\Rocket\Slack\Post_Message;
 use BinaryGary\Rocket\Slack\Webhooks;
+use BinaryGary\Rocket\Twitter\Message;
 
 class Retriever {
 
@@ -24,10 +25,16 @@ class Retriever {
 	 */
 	protected $launch;
 
+	/**
+	 * @var Message
+	 */
+	protected $twitter;
+
 	protected $timestamp;
 
-	public function __construct( Webhooks $webhooks ) {
+	public function __construct( Webhooks $webhooks, Message $twitter ) {
 		$this->messages  = $webhooks;
+		$this->twitter   = $twitter;
 		$this->timestamp = time();
 	}
 
@@ -72,6 +79,7 @@ class Retriever {
 				$method  = "build_message_{$frequency}";
 				$message = $this->$method( $launch );
 				$this->messages->alert( $message );
+				$this->twitter->send( $this->launch->message( false ) );
 				update_option( self::LAST_NOTIFICATION_SENT, $message );
 			}
 		}

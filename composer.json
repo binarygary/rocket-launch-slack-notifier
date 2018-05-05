@@ -4,7 +4,8 @@
   "type": "wordpress-plugin",
   "require": {
     "pimple/pimple": "^3.2",
-    "wyndow/fuzzywuzzy": "^0.6.0"
+    "wyndow/fuzzywuzzy": "^0.6.0",
+    "dg/twitter-php": "^3.7"
   },
   "authors": [
     {

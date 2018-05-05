@@ -38,7 +38,6 @@ abstract class Event extends Command {
 	public function get_launches( $params = [] ) {
 		$result = wp_remote_get( $this->setup_endpoint( $params ) );
 
-		error_log( $this->setup_endpoint( $params ) );
 		return json_decode( $result['body'] )->launches;
 	}
 

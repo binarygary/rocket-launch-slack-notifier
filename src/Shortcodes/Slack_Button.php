@@ -32,7 +32,7 @@ class Slack_Button {
 
 	private function build_url() {
 		$args = [
-			'scope'        => 'incoming-webhook',
+			'scope'        => 'incoming-webhook,bot,chat:write:bot',
 			'client_id'    => get_option( Defaults::SLACK_APP_ID ),
 			'redirect_uri' => $this->o_auth->get_endpoint_url(),
 		];

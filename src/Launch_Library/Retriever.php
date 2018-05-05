@@ -26,9 +26,8 @@ class Retriever {
 
 	protected $timestamp;
 
-	public function __construct( Webhooks $webhooks, Launch $launch ) {
+	public function __construct( Webhooks $webhooks ) {
 		$this->messages  = $webhooks;
-		$this->launch    = $launch;
 		$this->timestamp = time();
 	}
 

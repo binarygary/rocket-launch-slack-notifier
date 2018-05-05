@@ -47,7 +47,6 @@ class Launch {
 		isset( $launch->isonet ) ? $this->set( 'isonet', $launch->isonet ) : null;
 		isset( $launch->net ) ? $this->set( 'net', $launch->net ) : null;
 		isset( $launch->vidURLs[0] ) ? $this->set( 'video_url', $launch->vidURLs[0] ) : null;
-		$this->set( 'video_button', false );
 	}
 
 	public function message() {
@@ -90,7 +89,7 @@ class Launch {
 			$message['attachments'][0]['text'] = $this->description;
 		}
 
-		if ( isset( $this->video_button ) ) {
+		if ( isset( $this->video_button, $this->video_url )  ) {
 			$message['attachments'][0]['actions'][0] = [
 				'type' => 'button',
 				'text' => $this->video_button,

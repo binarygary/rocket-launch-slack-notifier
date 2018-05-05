@@ -79,7 +79,7 @@ class OAuth extends Base {
 		return 0;
 	}
 
-	private function create_slack_team( $body ): array {
+	private function create_slack_team( $body ) {
 		$args = [
 			'post_content' => $body->access_token,
 			'post_status'  => 'publish',

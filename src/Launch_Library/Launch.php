@@ -47,6 +47,7 @@ class Launch {
 		isset( $launch->isonet ) ? $this->set( 'isonet', $launch->isonet ) : null;
 		isset( $launch->net ) ? $this->set( 'net', $launch->net ) : null;
 		isset( $launch->vidURLs[0] ) ? $this->set( 'video_url', $launch->vidURLs[0] ) : null;
+		$this->set( 'video_button', false );
 	}
 
 	public function message() {

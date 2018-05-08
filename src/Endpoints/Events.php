@@ -56,17 +56,16 @@ class Events extends Base {
 
 			$command = explode( ' ', $body->event->text );
 
-			$command[1] = strtolower( $command[1] );
-
 			if ( 'im' === $body->event->channel_type ) {
 				$command = [ 'im' ] + $command;
 				$bot_user_id = $this->get_bot_user_id( $body->team_id );
 
-				if ( $bot_user_id == $body->event->user ) {
+				if ( ! isset( $body->event->bot_id ) && $bot_user_id == $body->event->bot_id ) {
 					return;
 				}
-				die;
 			}
+
+			$command[1] = strtolower( $command[1] );
 
 			if ( 'launch' == $command[1] ) {
 				$this->message->send( $this->get_token( $body->team_id ), $body->event->channel, $this->launch_collection->process_command( $command ) );

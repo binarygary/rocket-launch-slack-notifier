@@ -45,6 +45,10 @@ class Events extends Base {
 
 			$command = explode( ' ', $body->event->text );
 
+			if ( 'im' === $body->event->channel_type ) {
+				$command = [ 'im' ] + $command;
+			}
+
 			if ( 'launch' == $command[1] ) {
 				$this->message->send( $this->get_token( $body->team_id ), $body->event->channel, $this->collection->process_command( $command ) );
 				die;

@@ -57,6 +57,7 @@ class Events extends Base {
 			$command = explode( ' ', $body->event->text );
 
 			if ( 'im' === $body->event->channel_type ) {
+				error_log( print_r( $command, 1 ) );
 				$command = [ 'im' ] + $command;
 
 				error_log( print_r( $command, 1 ) );

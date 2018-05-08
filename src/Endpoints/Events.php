@@ -46,7 +46,7 @@ class Events extends Base {
 			$command = explode( ' ', $body->event->text );
 
 			if ( 'im' === $body->event->channel_type ) {
-				$command = [ 'im' ] + $command;
+				//$command = [ 'im' ] + $command;
 			}
 
 			if ( 'launch' == $command[1] ) {

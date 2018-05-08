@@ -63,6 +63,7 @@ class Events extends Base {
 				if ( ! isset( $body->event->bot_id ) && $bot_user_id == $body->event->bot_id ) {
 					return;
 				}
+				die;
 			}
 
 			$command[1] = strtolower( $command[1] );

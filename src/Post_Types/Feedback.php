@@ -5,7 +5,7 @@ namespace BinaryGary\Rocket\Post_Types;
 
 class Feedback extends Post_Type {
 
-	const NAME = 'feedback';
+	const NAME = 'slack_feedback';
 
 	public function post_type() {
 		return self::NAME;

@@ -30,7 +30,7 @@ class Launch extends Event {
 		return $this->request_value;
 	}
 
-	public function process(): array {
+	public function process( $command ): array {
 		foreach ( $this->get_launches() as $launch ) {
 			$this->launch->set( 'title', sprintf( '%s Launch Notice', $this->term ) );
 			$this->launch->set( 'color', 'a71930' );

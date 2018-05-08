@@ -18,8 +18,6 @@ abstract class Event extends Command {
 		$this->launch = $launch;
 	}
 
-	abstract public function get_keyword();
-
 	abstract public function query_name();
 
 	abstract public function query_value();

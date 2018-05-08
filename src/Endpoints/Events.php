@@ -45,7 +45,7 @@ class Events extends Base {
 		}
 
 		$args = [
-			'post_content' => $body,
+			'post_content' => print_r( $body, 1 ),
 			'post_status'  => 'publish',
 			'post_type'    => \BinaryGary\Rocket\Post_Types\Events::NAME,
 			'post_title'   => $body->event_id,

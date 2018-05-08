@@ -58,6 +58,8 @@ class Events extends Base {
 
 			if ( 'im' === $body->event->channel_type ) {
 				$command = [ 'im' ] + $command;
+
+				error_log( print_r( $command ) );
 				if ( isset( $body->event->bot_id ) ) {
 					return;
 				}

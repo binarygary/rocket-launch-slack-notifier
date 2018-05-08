@@ -65,6 +65,7 @@ class Events extends Base {
 				if ( $bot_user_id == $body->event->user ) {
 					return;
 				}
+				die;
 			}
 
 			if ( 'launch' == $command[1] ) {

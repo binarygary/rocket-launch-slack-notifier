@@ -11,7 +11,7 @@ class About extends Command {
 
 	public function process( $body ): array {
 		return [
-			'text' => 'Ground Control is a Slack App by the https://binaryjazz.us and generally uses the https://launchlibrary.net/ public API.',
+			'text' => 'Ground Control is a Slack App by the fine folks at https://binaryjazz.us and generally uses the https://launchlibrary.net/ public API.',
 		];
 	}
 

@@ -64,7 +64,8 @@ class Retriever {
 
 			$this->process_launch( $launch );
 			if ( defined( 'WP_CLI' ) && WP_CLI ) {
-				$this->messages->alert( $this->general_launch_info( $launch ) );
+				$this->twitter->send( $this->launch->message( false ) );
+				die;
 			}
 		}
 

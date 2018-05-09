@@ -64,8 +64,12 @@ class Retriever {
 
 			$this->process_launch( $launch );
 			if ( defined( 'WP_CLI' ) && WP_CLI ) {
+				$this->launch->set( 'title', sprintf( '%s Launch Notice', '24 Hour' ) );
+				$this->launch->set( 'color', '#42f4bc' );
+				$this->launch->set( 'launch', $launch );
 				$this->twitter->send( $this->launch->message( false ) );
 				die;
+				$this->messages->alert( $this->general_launch_info( $launch ) );
 			}
 		}
 

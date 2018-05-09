@@ -23,6 +23,8 @@ class Webhooks {
 			'post_statue'    => 'publish',
 		] );
 
+		print_r( $hooks->posts, 1 );
+
 		foreach ( $hooks->posts as $post ) {
 			$body = get_post_meta( $post->ID, 'response', true );
 			$this->post_message->send( $body->access_token, $body->incoming_webhook->channel_id, $message );

@@ -39,4 +39,24 @@ class Post_Message {
 		return wp_insert_post( $args );
 	}
 
+	public function incoming_webhook( $url, $message ) {
+		$result = wp_remote_post( $url,
+			[
+				'headers' => [
+					'Content-Type' => 'application/json',
+				],
+				'body'    => json_encode( $message ),
+			]
+		);
+
+		$args = [
+			'post_content' => print_r( $result, 1) . print_r( $message, 1 ),
+			'post_status'  => 'publish',
+			'post_type'    => Message_Log::POST_TYPE,
+			'post_title'   => $url,
+		];
+
+		return wp_insert_post( $args );
+	}
+
 }

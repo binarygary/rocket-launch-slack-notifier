@@ -46,7 +46,7 @@ class Launch_Collection {
 		if ( $event_name[1] > 35 ) {
 			$get_event = $this->get_event( $event_name[0] );
 
-			return $get_event->process();
+			return $get_event->process( $command );
 		}
 
 		return [

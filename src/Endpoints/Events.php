@@ -4,6 +4,7 @@ namespace BinaryGary\Rocket\Endpoints;
 
 use BinaryGary\Rocket\Endpoints\Events\Launch_Collection;
 use BinaryGary\Rocket\Endpoints\Events\Help;
+use BinaryGary\Rocket\Post_Types\Slack_Team;
 use BinaryGary\Rocket\Post_Types\Slack_URL;
 use BinaryGary\Rocket\Slack\Post_Message;
 
@@ -87,20 +88,18 @@ class Events extends Base {
 	}
 
 	private function get_token( $team_id ) {
-		error_log( $team_id );
 
 		$hooks = get_posts( [
-			'post_type'      => Slack_URL::POST_TYPE,
+			'post_type'      => Slack_Team::POST_TYPE,
 			'posts_per_page' => 1,
 			'post_statue'    => 'publish',
 			'post_title'     => $team_id,
 		] );
 
-		error_log( print_r( $hooks, 1 ) );
+
 
 		$body = get_post_meta( $hooks[0]->ID, 'response', true );
 
-		error_log( $hooks[0]->post_title );
 
 		return $body->access_token;
 	}

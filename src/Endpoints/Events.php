@@ -96,7 +96,7 @@ class Events extends Base {
 
 		$body = get_post_meta( $hooks->posts[0]->ID, 'response', true );
 
-		error_log( $body->post_title );
+		error_log( $hooks->posts[0]->post_title );
 
 		return $body->access_token;
 	}

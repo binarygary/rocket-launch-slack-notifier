@@ -91,10 +91,9 @@ class Events extends Base {
 		//SELECT post_content FROM `wp_e3c0865639_posts` WHERE post_title = 'T8C1R1ELB' AND  post_status = 'publish' AND post_type = 'slack_team' ORDER BY ID DESC LIMIT 0,1
 
 		$token = $wpdb->get_var( $wpdb->prepare(
-			"SELECT post_content FROM %s WHERE post_title='%s' AND post_status='publish' AND post_type='%s' ORDER BY ID DESC LIMIT 0,1 ",
-			$wpdb->posts,
-			Slack_Team::POST_TYPE,
-			$team_id
+			"SELECT post_content FROM {$wpdb->posts} WHERE post_title='%s' AND post_status='publish' AND post_type='%s' ORDER BY ID DESC LIMIT 0,1 ",
+			$team_id,
+			Slack_Team::POST_TYPE
 		) );
 
 		error_log( $wpdb->last_query );

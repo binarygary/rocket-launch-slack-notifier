@@ -3,6 +3,7 @@
 namespace BinaryGary\Rocket\Service_Providers;
 
 
+use BinaryGary\Rocket\Endpoints\Count;
 use BinaryGary\Rocket\Endpoints\Events;
 use BinaryGary\Rocket\Endpoints\OAuth;
 use BinaryGary\Rocket\Launch_Library\Active_Pad;
@@ -20,7 +21,7 @@ class Endpoints_Provider implements ServiceProviderInterface {
 	const ENDPOINTS_EVENTS_ABOUT     = 'endpoints.events.about';
 	const ENDPOINTS_EVENTS_FEEDBACK  = 'endpoints.events.feedback';
 
-	const ENDPOINT_EVENTS_SPACEX = 'endpoint.events.spacex';
+	const TEAM_COUNT = 'endpoints.count.team';
 
 	const ACTIVE_PROVIDERS = 'launch_library.active_provider';
 	const ACTIVE_PADS      = 'launch_library.active_pads';
@@ -58,6 +59,10 @@ class Endpoints_Provider implements ServiceProviderInterface {
 			return new Active_Pad();
 		};
 
+		$container[ self::TEAM_COUNT ] = function() use ( $container ) {
+			return new Count( $container[ Slack_Provider::POST_MESSAGE ] );
+		};
+
 		add_action( 'rest_api_init', function () use ( $container ) {
 			$container[ self::ENDPOINTS_EVENTS ]->add_keyword( $container[ self::ENDPOINTS_EVENTS_ABOUT ]->get_keyword(), $container[ self::ENDPOINTS_EVENTS_ABOUT ] );
 			$container[ self::ENDPOINTS_EVENTS ]->add_keyword( $container[ self::ENDPOINTS_EVENTS_FEEDBACK ]->get_keyword(), $container[ self::ENDPOINTS_EVENTS_FEEDBACK ] );
@@ -78,6 +83,7 @@ class Endpoints_Provider implements ServiceProviderInterface {
 
 			$container[ self::ENDPOINTS_OAUTH ]->register();
 			$container[ self::ENDPOINTS_EVENTS ]->register();
+			$container[ self::TEAM_COUNT ]->register();
 		} );
 
 	}

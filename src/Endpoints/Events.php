@@ -88,23 +88,12 @@ class Events extends Base {
 
 		global $wpdb;
 
-		//SELECT post_content FROM `wp_e3c0865639_posts` WHERE post_title = 'T8C1R1ELB' AND  post_status = 'publish' AND post_type = 'slack_team' ORDER BY ID DESC LIMIT 0,1
-
-		$token = $wpdb->get_var( $wpdb->prepare(
+		return $wpdb->get_var( $wpdb->prepare(
 			"SELECT post_content FROM {$wpdb->posts} WHERE post_title='%s' AND post_status='publish' AND post_type='%s' ORDER BY ID DESC LIMIT 0,1 ",
+			$wpdb->posts,
 			$team_id,
 			Slack_Team::POST_TYPE
 		) );
-
-		error_log( $wpdb->last_query );
-
-
-
-
-		error_log( 'team_id: ' . $team_id );
-		error_log( 'token: ' . $token );
-
-		return $token;
 
 	}
 

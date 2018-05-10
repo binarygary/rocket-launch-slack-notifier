@@ -62,7 +62,6 @@ class OAuth extends Base {
 
 		$slack_url_id = $this->create_slack_url( $body, $user_id, $team_id );
 
-		// @TODO: refactor this out...update Post_Message
 		update_post_meta( $slack_url_id, 'response', $body );
 
 		$this->redirect_uri->success();
@@ -71,6 +70,7 @@ class OAuth extends Base {
 
 	private function post_exists( $title ) {
 		$post = get_page_by_title( $title, 'OBJECT', Slack_URL::POST_TYPE );
+
 		if ( isset( $post->ID ) ) {
 			return $post->ID;
 		}

@@ -87,6 +87,8 @@ class Events extends Base {
 	}
 
 	private function get_token( $team_id ) {
+		error_log( $team_id );
+
 		$hooks = new \WP_Query( [
 			'post_type'      => Slack_URL::POST_TYPE,
 			'posts_per_page' => 1,

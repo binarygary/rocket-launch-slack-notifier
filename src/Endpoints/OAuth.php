@@ -68,8 +68,8 @@ class OAuth extends Base {
 		die;
 	}
 
-	private function post_exists( $title ) {
-		$post = get_page_by_title( $title, 'OBJECT', Slack_URL::POST_TYPE );
+	private function post_exists( $title, $post_type ) {
+		$post = get_page_by_title( $title, 'OBJECT', $post_type );
 
 		if ( isset( $post->ID ) ) {
 			return $post->ID;
@@ -84,7 +84,7 @@ class OAuth extends Base {
 			'post_status'  => 'publish',
 			'post_type'    => Slack_Team::POST_TYPE,
 			'post_title'   => $body->team_id,
-			'ID'           => $this->post_exists( $body->team_id ),
+			'ID'           => $this->post_exists( $body->team_id, Slack_Team::POST_TYPE ),
 		];
 
 		return wp_insert_post( $args );
@@ -117,7 +117,7 @@ class OAuth extends Base {
 			'post_type'    => Slack_URL::POST_TYPE,
 			'post_parent'  => $team_id,
 			'post_title'   => $body->incoming_webhook->channel_id,
-			'ID'           => $this->post_exists( $body->incoming_webhook->channel_id ),
+			'ID'           => $this->post_exists( $body->incoming_webhook->channel_id, Slack_URL::POST_TYPE ),
 		];
 
 		return wp_insert_post( $args );

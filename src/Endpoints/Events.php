@@ -56,7 +56,7 @@ class Events extends Base {
 
 			$command = explode( ' ', $body->event->text );
 
-			if ( 'im' === $body->event->channel_type ) {
+			if ( isset( $body->event->channel_type ) && 'im' === $body->event->channel_type ) {
 				$command = array_merge( [ 'im' ], $command );
 
 				if ( isset( $body->event->bot_id ) ) {
@@ -68,6 +68,9 @@ class Events extends Base {
 
 			if ( 'launch' == $command[1] ) {
 				echo json_encode( $this->launch_collection->process_command( $command ) );
+
+				error_log( 'token: ' . $this->get_token( $body->team_id ) );
+				error_log( 'channel: ' . $body->event->channel );
 
 				$this->message->send( $this->get_token( $body->team_id ), $body->event->channel, $this->launch_collection->process_command( $command ) );
 				die;
@@ -92,6 +95,8 @@ class Events extends Base {
 		] );
 
 		$body = get_post_meta( $hooks->posts[0]->ID, 'response', true );
+
+		error_log( $body->post_title );
 
 		return $body->access_token;
 	}

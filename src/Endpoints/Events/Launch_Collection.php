@@ -34,7 +34,7 @@ class Launch_Collection {
 		if ( array_key_exists( $command_concat, $this->events() ) ) {
 			$event = $this->get_event( $command_concat );
 
-			return $event->process();
+			return $event->process( $command );
 		}
 		$fuzz    = new Fuzz();
 		$process = new Process( $fuzz );

@@ -43,6 +43,14 @@ class Post_Type_Provider implements ServiceProviderInterface {
 			$container[ self::EVENTS ]->register();
 			$container[ self::FEEDBACK ]->register();
 		} );
+
+		add_action( 'manage_' . Slack_Team::POST_TYPE . '_posts_columns', function( $columns ) use ( $container ) {
+			return $container[ self::SLACK_TEAM ]->add_column( $columns );
+		} );
+
+		add_action( 'manage_' . Slack_Team::POST_TYPE . '_posts_custom_column' , function( $column, $post_id ) use ( $container ) {
+			return $container[ self::SLACK_TEAM ]->populate_column( $column, $post_id );
+		}, 10, 2 );
 	}
 
 }

@@ -56,7 +56,7 @@ class Events extends Base {
 
 			$command = explode( ' ', $body->event->text );
 
-			if ( 'im' === $body->event->channel_type ) {
+			if ( isset( $body->event->channel_type ) && 'im' === $body->event->channel_type ) {
 				$command = array_merge( [ 'im' ], $command );
 
 				if ( isset( $body->event->bot_id ) ) {

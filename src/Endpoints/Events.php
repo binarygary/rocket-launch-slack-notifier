@@ -67,29 +67,29 @@ class Events extends Base {
 			$command[1] = strtolower( $command[1] );
 
 			if ( 'launch' == $command[1] ) {
-				$this->message->incoming_webhook( $this->get_url( $body->team_id ), $this->launch_collection->process_command( $command ) );
+				echo json_encode( $this->launch_collection->process_command( $command ) );
+
+//				$this->message->send( $this->get_token( $body->team_id ), $body->event->channel, $this->launch_collection->process_command( $command ) );
 				die;
 			}
 
 			if ( array_key_exists( $command[1], $this->keywords ) ) {
-				$this->message->incoming_webhook( $this->get_url( $body->team_id ), $this->keywords[ $command[1] ]->process( $body ) );
+				$this->message->send( $this->get_token( $body->team_id ), $body->event->channel, $this->keywords[ $command[1] ]->process( $body ) );
 				die;
 			}
 
-			$this->message->incoming_webhook( $this->get_url( $body->team_id ), $this->help->process( $body ) );
+			$this->message->send( $this->get_token( $body->team_id ), $body->event->channel, $this->help->process( $body ) );
 			die;
 		}
 	}
 
-	private function get_url( $team_id ) {
+	private function get_token( $team_id ) {
 		$hooks = new \WP_Query( [
 			'post_type'      => Slack_URL::POST_TYPE,
 			'posts_per_page' => 1,
 			'post_statue'    => 'publish',
 			'post_title'     => $team_id,
 		] );
-
-		return $hooks->posts[0]->post_content;
 
 		$body = get_post_meta( $hooks->posts[0]->ID, 'response', true );
 

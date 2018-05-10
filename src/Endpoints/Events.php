@@ -70,9 +70,6 @@ class Events extends Base {
 			if ( 'launch' == $command[1] ) {
 				echo json_encode( $this->launch_collection->process_command( $command ) );
 
-				error_log( 'token: ' . $this->get_token( $body->team_id ) );
-				error_log( 'channel: ' . $body->event->channel );
-
 				$this->message->send( $this->get_token( $body->team_id ), $body->event->channel, $this->launch_collection->process_command( $command ) );
 				die;
 			}
@@ -89,6 +86,8 @@ class Events extends Base {
 
 	private function get_token( $team_id ) {
 
+		error_log( 'team_id: ' . $team_id );
+
 		$hooks = get_posts( [
 			'post_type'      => Slack_Team::POST_TYPE,
 			'posts_per_page' => 1,
@@ -97,6 +96,8 @@ class Events extends Base {
 		] );
 
 		error_log( print_r( $hooks,1 ) );
+
+		error_log( 'token: ' . $hooks[0]->post_content );
 
 		return $hooks[0]->post_content;
 	}

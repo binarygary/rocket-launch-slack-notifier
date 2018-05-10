@@ -90,7 +90,6 @@ class Events extends Base {
 
 		return $wpdb->get_var( $wpdb->prepare(
 			"SELECT post_content FROM {$wpdb->posts} WHERE post_title='%s' AND post_status='publish' AND post_type='%s' ORDER BY ID DESC LIMIT 0,1 ",
-			$wpdb->posts,
 			$team_id,
 			Slack_Team::POST_TYPE
 		) );

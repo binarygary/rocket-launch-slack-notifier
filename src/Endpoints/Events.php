@@ -96,12 +96,9 @@ class Events extends Base {
 			'post_title'     => $team_id,
 		] );
 
+		error_log( print_r( $hooks,1 ) );
 
-
-		$body = get_post_meta( $hooks[0]->ID, 'response', true );
-
-
-		return $body->access_token;
+		return $hooks[0]->post_content;
 	}
 
 }

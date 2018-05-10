@@ -69,7 +69,7 @@ class Events extends Base {
 			if ( 'launch' == $command[1] ) {
 				echo json_encode( $this->launch_collection->process_command( $command ) );
 
-//				$this->message->send( $this->get_token( $body->team_id ), $body->event->channel, $this->launch_collection->process_command( $command ) );
+				$this->message->send( $this->get_token( $body->team_id ), $body->event->channel, $this->launch_collection->process_command( $command ) );
 				die;
 			}
 

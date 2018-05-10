@@ -40,7 +40,7 @@ class Slack_Team extends Post_Type {
 		$meta = get_post_meta( $post_id, 'response', true );
 
 		if ( isset ( $meta->team_name ) ) {
-			return $meta->team_name;
+			echo $meta->team_name;
 		}
 	}
 

@@ -21,7 +21,7 @@ class Count extends Base {
 	public function process() {
 		global $wpdb;
 
-		return $wpdb->get_var( "SELECT COUNT(*) FROM {$wpdb->posts} WHERE post_type='slack_team' AND post_status='publish'");
+		return (int)$wpdb->get_var( "SELECT COUNT(*) FROM {$wpdb->posts} WHERE post_type='slack_team' AND post_status='publish'");
 	}
 
 }

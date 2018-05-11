@@ -101,6 +101,7 @@ class Retriever {
 	private function build_message_one_hour( $launch ) {
 		$this->launch->set( 'title', sprintf( '%s Launch Notice', '1 Hour' ) );
 		$this->launch->set( 'color', '#35c496' );
+		$this->launch->set( 'video_button', 'Live Launch Feed :rocket: (may not be live yet)' );
 		$this->launch->set( 'launch', $launch );
 
 		return $this->launch->message();

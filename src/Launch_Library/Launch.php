@@ -75,6 +75,7 @@ class Launch {
 					'short' => false,
 				],
 			],
+			'footer' => 'Try @groundcontrol launch next 10',
 		];
 
 		if ( ! ( $this->netstamp ) ) {

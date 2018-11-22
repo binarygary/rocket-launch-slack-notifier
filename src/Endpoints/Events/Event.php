@@ -28,8 +28,11 @@ abstract class Event extends Command {
 			'mode'              => 'verbose',
 			'limit'             => 1,
 			'timeout'           => 60,
-			$this->query_name() => $this->query_value(),
 		] );
+
+		if ( $this->query_value() ) {
+			$params [ $this->query_name() ] = $this->query_value();
+		}
 
 		return add_query_arg( $params, self::ENDPOINT );
 	}

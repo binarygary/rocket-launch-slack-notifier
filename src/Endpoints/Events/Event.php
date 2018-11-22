@@ -27,6 +27,7 @@ abstract class Event extends Command {
 			'startdate'         => date( 'Y-m-d' ),
 			'mode'              => 'verbose',
 			'limit'             => 1,
+			'timeout'           => 60,
 			$this->query_name() => $this->query_value(),
 		] );
 

@@ -68,10 +68,6 @@ class Events extends Base {
 			$command[1] = strtolower( $command[1] );
 
 			if ( 'launch' == $command[1] ) {
-				if ( 'next' == $command[2] && is_int( $command[3])) {
-					// Send the next X launches...
-				}
-
 				echo json_encode( $this->launch_collection->process_command( $command ) );
 
 				$this->message->send( $this->get_token( $body->team_id ), $body->event->channel, $this->launch_collection->process_command( $command ) );

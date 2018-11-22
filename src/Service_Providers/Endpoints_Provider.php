@@ -20,6 +20,7 @@ class Endpoints_Provider implements ServiceProviderInterface {
 	const ENDPOINTS_EVENTS_HELP      = 'endpoints.events.help';
 	const ENDPOINTS_EVENTS_ABOUT     = 'endpoints.events.about';
 	const ENDPOINTS_EVENTS_FEEDBACK  = 'endpoints.events.feedback';
+	const ENDPOINTS_NEXT             = 'endpoints.events.next';
 
 	const TEAM_COUNT = 'endpoints.count.team';
 
@@ -63,6 +64,10 @@ class Endpoints_Provider implements ServiceProviderInterface {
 			return new Count( $container[ Slack_Provider::POST_MESSAGE ] );
 		};
 
+		$container[ self::ENDPOINTS_NEXT ] = function() use ($container) {
+			return new Events\Next( $container[ Launch_Library_Provider::LAUNCH ], [] );
+		};
+
 		add_action( 'rest_api_init', function () use ( $container ) {
 			$container[ self::ENDPOINTS_EVENTS ]->add_keyword( $container[ self::ENDPOINTS_EVENTS_ABOUT ]->get_keyword(), $container[ self::ENDPOINTS_EVENTS_ABOUT ] );
 			$container[ self::ENDPOINTS_EVENTS ]->add_keyword( $container[ self::ENDPOINTS_EVENTS_FEEDBACK ]->get_keyword(), $container[ self::ENDPOINTS_EVENTS_FEEDBACK ] );
@@ -80,6 +85,8 @@ class Endpoints_Provider implements ServiceProviderInterface {
 				};
 				$container[ self::ENDPOINT_EVENTS_COLLECTION ]->add( $container[ $pad ] );
 			}
+
+			$container[ self::ENDPOINT_EVENTS_COLLECTION ]->add( $container[ self::ENDPOINTS_NEXT ] );
 
 			$container[ self::ENDPOINTS_OAUTH ]->register();
 			$container[ self::ENDPOINTS_EVENTS ]->register();

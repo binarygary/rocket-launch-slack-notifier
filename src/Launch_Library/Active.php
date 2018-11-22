@@ -17,7 +17,11 @@ abstract class Active {
 			return $this->launches;
 		}
 
-		$result = wp_remote_get( self::ENDPOINT );
+		$result = wp_remote_get( self::ENDPOINT, [ 'timeout' => 60 ] );
+		if ( is_wp_error( $result ) ) {
+			return [];
+		}
+
 		$launch_results = json_decode( $result['body'] );
 		$this->launches = $launch_results->launches;
 

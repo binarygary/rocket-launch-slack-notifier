@@ -57,6 +57,9 @@ class Retriever {
 
 	public function get_launches() {
 		$result   = wp_remote_get( self::ENDPOINT );
+		if ( is_wp_error( $result ) ) {
+			return;
+		}
 		$launches = json_decode( $result['body'] );
 
 		foreach ( $launches->launches as $launch ) {

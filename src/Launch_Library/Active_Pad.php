@@ -16,7 +16,7 @@ class Active_Pad extends Active {
 	public function get_active() {
 		$pad_data = get_transient( self::PAD_TRANSIENT );
 		if ( $pad_data ) {
-			//return $pad_data;
+			return $pad_data;
 		}
 
 		foreach ( $this->get_launches() as $launch ) {
@@ -26,6 +26,9 @@ class Active_Pad extends Active {
 		}
 
 		$result = wp_remote_get( $this->build_url() );
+		if ( is_wp_error( $result ) ) {
+			return [];
+		}
 		$pads   = json_decode( $result['body'] );
 
 		$pad_data     = [];

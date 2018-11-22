@@ -27,7 +27,6 @@ abstract class Event extends Command {
 			'startdate'         => date( 'Y-m-d' ),
 			'mode'              => 'verbose',
 			'limit'             => 1,
-			'timeout'           => 60,
 		] );
 
 		if ( $this->query_value() ) {
@@ -38,7 +37,7 @@ abstract class Event extends Command {
 	}
 
 	public function get_launches( $params = [] ) {
-		$result = wp_remote_get( $this->setup_endpoint( $params ) );
+		$result = wp_remote_get( $this->setup_endpoint( $params ), [ 'timeout' => 60 ] );
 
 		return json_decode( $result['body'] )->launches;
 	}

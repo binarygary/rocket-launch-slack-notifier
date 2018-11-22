@@ -21,7 +21,7 @@ class Next extends Launch {
 		$launches = [];
 
 		foreach ( array_slice( $this->get_launches( [ 'limit' => $this->count ]), 0, $this->count ) as $launch ) {
-			$launches['attachments'][] = sprintf( '*%s* %s %s',
+			$launches['attachments'][]['text'] = sprintf( '%s - %s - %s',
 				$launch->name,
 				sprintf( '<!date^%s^{date_num}|%s>', strtotime( $launch->isonet ), $launch->net ),
 				$launch->location->name

@@ -32,10 +32,10 @@ class Slack_Team extends Post_Type {
 			return;
 		}
 
-//		global $wpdb;
-//
-//		$token = get_the_content( $post_id );
-//		$post_id = $wpdb->get_var( "SELECT post_id FROM {$wpdb->postmeta} WHERE meta_value LIKE '%$token%'" );
+		global $wpdb;
+
+		$token = get_the_content( $post_id );
+		$post_id = $wpdb->get_var( "SELECT post_id FROM {$wpdb->postmeta} WHERE meta_value LIKE '%$token%'" );
 
 		$meta = get_post_meta( $post_id, 'response', true );
 

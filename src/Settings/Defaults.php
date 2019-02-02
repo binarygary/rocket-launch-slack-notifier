@@ -2,6 +2,9 @@
 
 namespace BinaryGary\Rocket\Settings;
 
+use BinaryGary\Rocket\Post_Types\Slack_Team;
+use Slack\Team;
+
 class Defaults {
 
 	const SETTINGS_PAGE_NAME = 'rocket-launch-slack-notifier';
@@ -20,6 +23,8 @@ class Defaults {
 	const TWITTER_CONUMER_SECRET = 'twitter_consumer_secret';
 	const ACCESS_TOKEN           = 'twitter_access_token';
 	const ACCESS_TOKEN_SECRET    = 'twitter_access_token_secret';
+
+	const PRIMARY_TEAM = 'rocket-launch-primary-team';
 
 	public function create_menu() {
 		add_submenu_page(
@@ -66,11 +71,14 @@ class Defaults {
 		register_setting( self::SETTINGS_GROUP, self::TWITTER_CONUMER_SECRET );
 		register_setting( self::SETTINGS_GROUP, self::ACCESS_TOKEN );
 		register_setting( self::SETTINGS_GROUP, self::ACCESS_TOKEN_SECRET );
+		register_setting( self::SETTINGS_GROUP, self::PRIMARY_TEAM );
 
 		$this->text_input_settings();
 		$this->page_input_settings();
 
 		$this->twitter_text_input_settings();
+
+		$this->add_primary_team_selector();
 
 	}
 
@@ -138,4 +146,23 @@ class Defaults {
 		}
 	}
 
+    private function add_primary_team_selector() {
+        add_settings_section(
+            self::PRIMARY_TEAM . '_section',
+            __( 'Primary Team', 'gary' ),
+            function () {
+                $teams = get_posts( [
+                    'numberposts' => 1000,
+                    'post_type'   => Slack_Team::POST_TYPE,
+                ] );
+
+                printf( '<select name="%s" id="%s">', self::PRIMARY_TEAM, self::PRIMARY_TEAM );
+                foreach ( $teams as $team ) {
+                    printf( '<option class="level-0" value="%s">%s</option>', $team->ID, get_post_meta( $team->ID, 'response', true )->team_name );
+                }
+                printf( '</select>' );
+            },
+            self::SETTINGS_PAGE_NAME
+        );
+    }
 }

@@ -158,7 +158,11 @@ class Defaults {
 
                 $teams = [];
                 foreach ( $team_posts as $team_post ) {
-                    $teams[ $team_post ] = get_post_meta( $team_post, 'response', true )->team_name;
+                    global $wpdb;
+
+                    $token = get_the_content( $team_post );
+                    $post_id = $wpdb->get_var( "SELECT post_id FROM {$wpdb->postmeta} WHERE meta_value LIKE '%$token%'" );
+                    $teams[ $post_id ] = get_post_meta( $post_id, 'response', true )->team_name;
                 }
 
                 asort( $teams );

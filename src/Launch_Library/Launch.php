@@ -3,6 +3,8 @@
 namespace BinaryGary\Rocket\Launch_Library;
 
 
+use BinaryGary\Rocket\Footer\Formatter;
+
 class Launch {
 
 	const LAUNCH = 'launch';
@@ -54,6 +56,8 @@ class Launch {
 			throw new \Exception( 'Required params were not met' . print_r( $this, 1 ) );
 		}
 
+		$footer = new Formatter();
+
 		$message['attachments'][0] = [
 			'pretext' => $this->title,
 			'color'   => $this->color,
@@ -75,7 +79,7 @@ class Launch {
 					'short' => false,
 				],
 			],
-			'footer' => 'Try @groundcontrol launch next 10',
+			'footer' => $footer->random(),
 		];
 
 		if ( ! ( $this->netstamp ) ) {

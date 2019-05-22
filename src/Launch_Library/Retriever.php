@@ -41,7 +41,7 @@ class Retriever {
 	public function range() {
 		return [
 			'one_day'     => [
-				'min_range' => 86340,
+				'min_range' => 86341,
 				'max_range' => 86400,
 			],
 			'one_hour'    => [

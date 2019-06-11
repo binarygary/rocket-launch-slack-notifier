@@ -5,7 +5,8 @@
   "require": {
     "pimple/pimple": "^3.2",
     "wyndow/fuzzywuzzy": "^0.6.0",
-    "dg/twitter-php": "^3.7"
+    "dg/twitter-php": "^3.7",
+    "php": "^7"
   },
   "authors": [
     {

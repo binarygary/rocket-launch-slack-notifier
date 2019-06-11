@@ -7,7 +7,15 @@ Version:     1.0
 Author URI:  https://www.binarygary.com/
 */
 
-require_once trailingslashit( __DIR__ ) . 'vendor/autoload.php';
+$autoload = trailingslashit( __DIR__ ) . 'vendor/autoload.php';
+
+if ( file_exists( $autoload ) ) {
+	require_once $autoload;
+}
+
+if ( ! class_exists( '\BinaryGary\Rocket\Core', false ) ) {
+	return;
+}
 
 // Start the core plugin
 add_action( 'plugins_loaded', function () {

@@ -3,6 +3,7 @@
 namespace BinaryGary\Rocket\Service_Providers;
 
 
+use BinaryGary\Rocket\Broker\AnnounceAll;
 use BinaryGary\Rocket\Launch_Library\Launch;
 use BinaryGary\Rocket\Launch_Library\Retriever;
 use Pimple\Container;
@@ -12,8 +13,13 @@ class Launch_Library_Provider implements ServiceProviderInterface {
 
 	const RETRIEVER = 'launch_library.retriever';
 	const LAUNCH    = 'launch_library.launch';
+	const BROKER    = 'broker.announceall';
 
 	public function register( Container $container ) {
+		$container[ self::BROKER ] = function() {
+			return new AnnounceAll();
+		};
+
 		$container[ self::RETRIEVER ] = function () use ( $container ) {
 			return new Retriever( $container[ Slack_Provider::WEBHOOKS ], $container[ Twitter_Service_Provider::TWITTER_MESSAGE ] );
 		};

@@ -3,6 +3,7 @@
 namespace BinaryGary\Rocket\Slack;
 
 
+use BinaryGary\Rocket\Post_Types\Message_Log;
 use BinaryGary\Rocket\Post_Types\Slack_URL;
 
 class Webhooks {
@@ -24,9 +25,29 @@ class Webhooks {
 		] );
 
 		foreach ( $hooks->posts as $post ) {
-			$this->post_message->incoming_webhook( $post->post_content, $message );
+			$this->incoming_webhook( $post->post_content, $message );
 		}
 
+	}
+
+	public function incoming_webhook( $url, $message ) {
+		$result = wp_remote_post( $url,
+			[
+				'headers' => [
+					'Content-Type' => 'application/json',
+				],
+				'body'    => json_encode( $message ),
+			]
+		);
+
+		$args = [
+			'post_content' => print_r( $result, 1) . print_r( $message, 1 ),
+			'post_status'  => 'publish',
+			'post_type'    => Message_Log::POST_TYPE,
+			'post_title'   => $url,
+		];
+
+		return wp_insert_post( $args );
 	}
 
 }

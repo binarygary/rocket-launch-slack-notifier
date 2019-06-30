@@ -2,7 +2,6 @@
 
 namespace BinaryGary\Rocket\Launch_Library;
 
-use BinaryGary\Rocket\Slack\Post_Message;
 use BinaryGary\Rocket\Slack\Webhooks;
 use BinaryGary\Rocket\Twitter\Message;
 
@@ -16,7 +15,7 @@ class Retriever {
 	const NEXT_5_SCHEDULED_LAUNCHES = 'next_5_scheduled_launches';
 
 	/**
-	 * @var Post_Message
+	 * @var Webhooks
 	 */
 	protected $messages;
 

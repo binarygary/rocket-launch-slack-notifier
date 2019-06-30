@@ -8,15 +8,6 @@ use BinaryGary\Rocket\Post_Types\Slack_URL;
 
 class Webhooks {
 
-	/**
-	 * @var Post_Message
-	 */
-	protected $post_message;
-
-	public function __construct( Post_Message $post_message ) {
-		$this->post_message = $post_message;
-	}
-
 	public function alert( $message ) {
 		$hooks = new \WP_Query( [
 			'post_type'      => Slack_URL::POST_TYPE,
@@ -30,6 +21,7 @@ class Webhooks {
 
 	}
 
+	// @TODO: rename this...it's terrible.
 	public function incoming_webhook( $url, $message ) {
 		$result = wp_remote_post( $url,
 			[

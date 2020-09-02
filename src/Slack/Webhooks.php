@@ -27,6 +27,10 @@ class Webhooks {
 			$this->post_message->incoming_webhook( $post->post_content, $message );
 		}
 
+		if ( empty ($hooks->post ) ) {
+			error_log( print_r( $message, 1 ) );
+		}
+
 	}
 
 }

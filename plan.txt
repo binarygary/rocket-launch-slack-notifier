@@ -1,0 +1,8 @@
+- Fix endpoints
+-- Log the send format
+--- twitter
+--- slack
+-- update the endpoints
+--- compare send format
+---- slack
+---- twitter

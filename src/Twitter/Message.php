@@ -14,7 +14,7 @@ class Message {
 		try {
 			$this->twitter->send( $message );
 		} catch ( \Exception $exception ) {
-			error_log( print_r( $message, 1 ) );
+			error_log( 'twitter send: ' . print_r( $message, 1 ) );
 			return;
 		}
 	}

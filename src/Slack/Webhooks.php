@@ -28,7 +28,7 @@ class Webhooks {
 		}
 
 		if ( empty ($hooks->post ) ) {
-			error_log( print_r( $message, 1 ) );
+			error_log( 'slack webhook: ' . print_r( $message, 1 ) );
 		}
 
 	}

@@ -13,7 +13,10 @@ class Space_Devs_Provider implements ServiceProviderInterface {
 
 	public function register( Container $container ) {
 		$container[ self::RETRIEVER ] = function () use ( $container ) {
-			return new Retriever();
+			return new Retriever(
+				$container[ Slack_Provider::WEBHOOKS ],
+				$container[ Twitter_Service_Provider::TWITTER_MESSAGE ]
+			);
 		};
 
 		add_action( 'init', function () {

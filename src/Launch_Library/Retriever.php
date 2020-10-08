@@ -76,7 +76,6 @@ class Retriever {
 		}
 
 		$this->next_launches_update( $launches );
-
 	}
 
 	protected function process_launch( $launch ) {

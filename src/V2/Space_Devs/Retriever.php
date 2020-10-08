@@ -70,7 +70,8 @@ class Retriever extends Cacheable {
 
 			if ( defined( 'WP_CLI' ) && WP_CLI ) {
 				$alert = new Webhooks( new Post_Message() );
-				$alert->alert( $this->general_launch_info( $launch_object ) );
+				error_log( print_r( $launch_object,1) );
+//				$alert->alert( $this->general_launch_info( $launch_object ) );
 			}
 		}
 

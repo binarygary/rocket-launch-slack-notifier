@@ -66,12 +66,11 @@ class Retriever extends Cacheable {
 				$launch_object->set( 'video_button', 'Launch Feed :rocket:' );
 			}
 
-			$this->process_launch( $launch );
+			$this->process_launch( $launch_object );
 
 			if ( defined( 'WP_CLI' ) && WP_CLI ) {
 				$alert = new Webhooks( new Post_Message() );
-				error_log( print_r( $launch_object,1) );
-//				$alert->alert( $this->general_launch_info( $launch_object ) );
+				$alert->alert( $this->general_launch_info( $launch_object ) );
 			}
 		}
 
@@ -80,10 +79,10 @@ class Retriever extends Cacheable {
 
 	private function next_launches_update( $launches ) {
 		$message = '<ul>';
-		foreach ( $launches->launches as $launch ) {
+		foreach ( $launches->results as $launch ) {
 			$message .= sprintf( '<li>%s From %s at %s</li>',
 				$launch->name,
-				$launch->location->name,
+				$launch->pad->name,
 				$launch->net
 			);
 		}
@@ -102,7 +101,7 @@ class Retriever extends Cacheable {
 
 	protected function process_launch( $launch ) {
 		foreach ( $this->range() as $frequency => $range ) {
-			if ( filter_var( $launch->netstamp - $this->timestamp, FILTER_VALIDATE_INT, [ 'options' => $range ] ) ) {
+			if ( filter_var( $launch->get( 'netstamp' ) - $this->timestamp, FILTER_VALIDATE_INT, [ 'options' => $range ] ) ) {
 				$method  = "build_message_{$frequency}";
 				$message = $this->$method( $launch );
 				$this->messages->alert( $message );

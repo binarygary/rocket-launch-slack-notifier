@@ -22,6 +22,7 @@ Launch notices will include the type of vehicle, launch location, some mission i
 _Commands:_
 I can understand a few commands, but you\'ll need to @ me to get my attention (If you DM me, no need to @ me...).
 
+We are in the process of migrating to a new launch API. The following command is temporarily disabled.
 `launch [who/where]` Try `@ground_control launch SpaceX` or `@ground_control launch cape canaveral` and I\'ll reply with the next launch I know of by that provider.
 
 `about` 

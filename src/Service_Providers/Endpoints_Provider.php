@@ -72,21 +72,21 @@ class Endpoints_Provider implements ServiceProviderInterface {
 			$container[ self::ENDPOINTS_EVENTS ]->add_keyword( $container[ self::ENDPOINTS_EVENTS_ABOUT ]->get_keyword(), $container[ self::ENDPOINTS_EVENTS_ABOUT ] );
 			$container[ self::ENDPOINTS_EVENTS ]->add_keyword( $container[ self::ENDPOINTS_EVENTS_FEEDBACK ]->get_keyword(), $container[ self::ENDPOINTS_EVENTS_FEEDBACK ] );
 
-			foreach ( $container[ self::ACTIVE_PROVIDERS ]->get_active() as $agency => $attributes ) {
-				$container[ $agency ] = function () use ( $container, $attributes ) {
-					return new Events\Launch( $container[ Launch_Library_Provider::LAUNCH ], $attributes );
-				};
-				$container[ self::ENDPOINT_EVENTS_COLLECTION ]->add( $container[ $agency ] );
-			}
-
-			foreach ( $container[ self::ACTIVE_PADS ]->get_active() as $pad => $attributes ) {
-				$container[ $pad ] = function () use ( $container, $attributes ) {
-					return new Events\Launch( $container[ Launch_Library_Provider::LAUNCH ], $attributes );
-				};
-				$container[ self::ENDPOINT_EVENTS_COLLECTION ]->add( $container[ $pad ] );
-			}
-
-			$container[ self::ENDPOINT_EVENTS_COLLECTION ]->add( $container[ self::ENDPOINTS_NEXT ] );
+//			foreach ( $container[ self::ACTIVE_PROVIDERS ]->get_active() as $agency => $attributes ) {
+//				$container[ $agency ] = function () use ( $container, $attributes ) {
+//					return new Events\Launch( $container[ Launch_Library_Provider::LAUNCH ], $attributes );
+//				};
+//				$container[ self::ENDPOINT_EVENTS_COLLECTION ]->add( $container[ $agency ] );
+//			}
+//
+//			foreach ( $container[ self::ACTIVE_PADS ]->get_active() as $pad => $attributes ) {
+//				$container[ $pad ] = function () use ( $container, $attributes ) {
+//					return new Events\Launch( $container[ Launch_Library_Provider::LAUNCH ], $attributes );
+//				};
+//				$container[ self::ENDPOINT_EVENTS_COLLECTION ]->add( $container[ $pad ] );
+//			}
+//
+//			$container[ self::ENDPOINT_EVENTS_COLLECTION ]->add( $container[ self::ENDPOINTS_NEXT ] );
 
 			$container[ self::ENDPOINTS_OAUTH ]->register();
 			$container[ self::ENDPOINTS_EVENTS ]->register();

@@ -40,6 +40,10 @@ class Launch {
 		$this->$param = $value;
 	}
 
+	public function get( $param ) {
+		return $this->$param;
+	}
+
 	private function setup_launch( $launch ) {
 		isset( $launch->name ) ? $this->set( 'launch_name', $launch->name ) : null;
 		isset( $launch->rocket->name ) ? $this->set( 'vehicle', $launch->rocket->name ) : null;

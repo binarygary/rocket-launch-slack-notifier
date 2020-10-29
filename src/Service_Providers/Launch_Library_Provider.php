@@ -23,18 +23,19 @@ class Launch_Library_Provider implements ServiceProviderInterface {
 		};
 
 		add_action( 'init', function() {
-			if ( ! wp_next_scheduled( 'launch_cron' ) ) {
-				wp_schedule_event( time(), 'minutely', 'launch_cron' );
+			$next_scheduled = wp_next_scheduled( 'launch_cron' );
+			if ( $next_scheduled ) {
+				wp_unschedule_event( $next_scheduled, 'launch_cron' );
 			}
 		} );
 
-		add_filter( 'cron_schedules', function ( $schedules ) use ( $container ) {
-			return $container[ self::RETRIEVER ]->add_interval( $schedules );
-		} );
-
-		add_action( 'launch_cron', function () use ( $container ) {
-			$container[ self::RETRIEVER ]->get_launches();
-		} );
+//		add_filter( 'cron_schedules', function ( $schedules ) use ( $container ) {
+//			return $container[ self::RETRIEVER ]->add_interval( $schedules );
+//		} );
+//
+//		add_action( 'launch_cron', function () use ( $container ) {
+//			$container[ self::RETRIEVER ]->get_launches();
+//		} );
 	}
 
 }

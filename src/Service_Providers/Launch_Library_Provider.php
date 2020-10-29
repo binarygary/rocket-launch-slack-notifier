@@ -29,10 +29,10 @@ class Launch_Library_Provider implements ServiceProviderInterface {
 			}
 		} );
 
-//		add_filter( 'cron_schedules', function ( $schedules ) use ( $container ) {
-//			return $container[ self::RETRIEVER ]->add_interval( $schedules );
-//		} );
-//
+		add_filter( 'cron_schedules', function ( $schedules ) use ( $container ) {
+			return $container[ self::RETRIEVER ]->add_interval( $schedules );
+		} );
+
 //		add_action( 'launch_cron', function () use ( $container ) {
 //			$container[ self::RETRIEVER ]->get_launches();
 //		} );

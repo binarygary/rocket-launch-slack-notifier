@@ -49,8 +49,12 @@ class Launch_Collection {
 			return $get_event->process( $command );
 		}
 
+//		return [
+//			'text' => 'I did not understand what launch provider or launch pad you are looking for. Here is a list of words you can use after launch: ' . $this->get_keywords(),
+//		];
+
 		return [
-			'text' => 'I did not understand what launch provider or launch pad you are looking for. Here is a list of words you can use after launch: ' . $this->get_keywords(),
+			'text' => 'Launch commands are temporarily disabled.',
 		];
 
 	}

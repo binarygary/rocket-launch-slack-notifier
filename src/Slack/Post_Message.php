@@ -20,11 +20,12 @@ class Post_Message {
 
 		$result = wp_remote_post( self::ENDPOINT,
 			[
-				'headers' => [
+				'headers'  => [
 					'Content-Type' => 'application/json',
 					'Authorization' => "Bearer $token",
 				],
-				'body'    => json_encode( $message ),
+				'body'     => json_encode( $message ),
+				'blocking' => false,
 			]
 		);
 

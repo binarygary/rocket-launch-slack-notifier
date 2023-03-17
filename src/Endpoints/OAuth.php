@@ -27,6 +27,7 @@ class OAuth extends Base {
 		register_rest_route( self::PATH, self::ENDPOINT, [
 			'methods'  => 'GET',
 			'callback' => [ $this, 'auth' ],
+			'permission_callback' => '__return_true
 		] );
 	}
 

@@ -15,6 +15,7 @@ class Count extends Base {
 		register_rest_route( self::PATH, self::ENDPOINT, [
 			'methods'  => 'GET',
 			'callback' => [ $this, 'process' ],
+			'permission_callback' => '__return_true
 		] );
 	}
 

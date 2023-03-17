@@ -26,7 +26,7 @@ class Events extends Base {
 		register_rest_route( self::PATH, self::ENDPOINT, [
 			'methods'  => 'POST',
 			'callback' => [ $this, 'process' ],
-			'permission_callback' => '__return_true
+			'permission_callback' => '__return_true'
 		] );
 	}
 

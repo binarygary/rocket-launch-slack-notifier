@@ -53,8 +53,6 @@ class Defaults {
         register_setting( self::SETTINGS_GROUP, self::SUCCESS_MESSAGE );
         register_setting( self::SETTINGS_GROUP, self::SUCCESS_PAGE );
         register_setting( self::SETTINGS_GROUP, self::FAILURE_PAGE );
-        register_setting( self::SETTINGS_GROUP, self::ACCESS_TOKEN );
-        register_setting( self::SETTINGS_GROUP, self::ACCESS_TOKEN_SECRET );
         register_setting( self::SETTINGS_GROUP, self::PRIMARY_TEAM );
 
         $this->text_input_settings();

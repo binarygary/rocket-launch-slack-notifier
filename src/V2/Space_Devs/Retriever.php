@@ -14,7 +14,7 @@ class Retriever extends Cacheable {
 	const LAST_NOTIFICATION_SENT    = 'last_notification_sent';
 
 	private $timestamp;
-	private $messages
+	private $messages;
 
 	public function __construct( Webhooks $webhooks ) {
 		$this->messages  = $webhooks;

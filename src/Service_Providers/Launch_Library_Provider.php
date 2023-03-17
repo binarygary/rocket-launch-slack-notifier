@@ -15,7 +15,7 @@ class Launch_Library_Provider implements ServiceProviderInterface {
 
 	public function register( Container $container ) {
 		$container[ self::RETRIEVER ] = function () use ( $container ) {
-			return new Retriever( $container[ Slack_Provider::WEBHOOKS ], $container[ Twitter_Service_Provider::TWITTER_MESSAGE ] );
+			return new Retriever( $container[ Slack_Provider::WEBHOOKS ] );
 		};
 
 		$container[ self::LAUNCH ] = function() {

@@ -25,16 +25,10 @@ class Retriever {
 	 */
 	protected $launch;
 
-	/**
-	 * @var Message
-	 */
-	protected $twitter;
-
 	protected $timestamp;
 
 	public function __construct( Webhooks $webhooks, Message $twitter ) {
 		$this->messages  = $webhooks;
-		$this->twitter   = $twitter;
 		$this->timestamp = time();
 	}
 
@@ -70,7 +64,6 @@ class Retriever {
 				$this->launch->set( 'title', 'Launch Notice' );
 				$this->launch->set( 'color', '#42f4bc' );
 				$this->launch->set( 'launch', $launch );
-				$this->twitter->send( $this->launch->message( false ) );
 				$this->messages->alert( $this->general_launch_info( $launch ) );
 			}
 		}
@@ -86,7 +79,6 @@ class Retriever {
 				$method  = "build_message_{$frequency}";
 				$message = $this->$method( $launch );
 				$this->messages->alert( $message );
-				$this->twitter->send( $this->launch->message( false ) );
 				update_option( self::LAST_NOTIFICATION_SENT, $message );
 			}
 		}

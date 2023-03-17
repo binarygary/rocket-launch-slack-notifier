@@ -5,7 +5,6 @@ namespace BinaryGary\Rocket\V2\Space_Devs;
 use BinaryGary\Rocket\Launch_Library\Launch;
 use BinaryGary\Rocket\Slack\Post_Message;
 use BinaryGary\Rocket\Slack\Webhooks;
-use BinaryGary\Rocket\Twitter\Message;
 
 class Retriever extends Cacheable {
 
@@ -15,12 +14,10 @@ class Retriever extends Cacheable {
 	const LAST_NOTIFICATION_SENT    = 'last_notification_sent';
 
 	private $timestamp;
-	private $messages;
-	private $twitter;
+	private $messages
 
-	public function __construct( Webhooks $webhooks, Message $twitter ) {
+	public function __construct( Webhooks $webhooks ) {
 		$this->messages  = $webhooks;
-		$this->twitter   = $twitter;
 		$this->timestamp = time();
 	}
 
@@ -105,7 +102,6 @@ class Retriever extends Cacheable {
 				$method  = "build_message_{$frequency}";
 				$message = $this->$method( $launch );
 				$this->messages->alert( $message );
-				$this->twitter->send( $launch->message( false ) );
 				update_option( self::LAST_NOTIFICATION_SENT, $message );
 			}
 		}

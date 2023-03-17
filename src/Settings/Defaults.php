@@ -19,11 +19,6 @@ class Defaults {
     const SUCCESS_PAGE = 'slack_api_success';
     const FAILURE_PAGE = 'slack_api_failure';
 
-    const TWITTER_CONUMER_KEY    = 'twitter_consumer_key';
-    const TWITTER_CONUMER_SECRET = 'twitter_consumer_secret';
-    const ACCESS_TOKEN           = 'twitter_access_token';
-    const ACCESS_TOKEN_SECRET    = 'twitter_access_token_secret';
-
     const PRIMARY_TEAM = 'rocket-launch-primary-team';
 
     public function create_menu() {
@@ -45,15 +40,6 @@ class Defaults {
         ];
     }
 
-    public function twitter_text_fields() {
-        return [
-            self::TWITTER_CONUMER_KEY    => __( 'Twitter Consumer Key', 'tribe' ),
-            self::TWITTER_CONUMER_SECRET => __( 'Twitter Consumer Secret', 'tribe' ),
-            self::ACCESS_TOKEN           => __( 'Twitter Access Token', 'tribe' ),
-            self::ACCESS_TOKEN_SECRET    => __( 'Twitter Access Token Secret', 'tribe' ),
-        ];
-    }
-
     public function page_fields() {
         return [
             self::SUCCESS_PAGE => __( 'Success Page', 'tribe' ),
@@ -67,17 +53,13 @@ class Defaults {
         register_setting( self::SETTINGS_GROUP, self::SUCCESS_MESSAGE );
         register_setting( self::SETTINGS_GROUP, self::SUCCESS_PAGE );
         register_setting( self::SETTINGS_GROUP, self::FAILURE_PAGE );
-        register_setting( self::SETTINGS_GROUP, self::TWITTER_CONUMER_KEY );
-        register_setting( self::SETTINGS_GROUP, self::TWITTER_CONUMER_SECRET );
         register_setting( self::SETTINGS_GROUP, self::ACCESS_TOKEN );
         register_setting( self::SETTINGS_GROUP, self::ACCESS_TOKEN_SECRET );
         register_setting( self::SETTINGS_GROUP, self::PRIMARY_TEAM );
 
         $this->text_input_settings();
         $this->page_input_settings();
-
-        $this->twitter_text_input_settings();
-
+        
         $this->add_primary_team_selector();
 
     }
@@ -114,21 +96,6 @@ class Defaults {
         }
     }
 
-    private function twitter_text_input_settings() {
-        foreach ( $this->twitter_text_fields() as $field => $title ) {
-            add_settings_section(
-                $field . '_section',
-                $title,
-                function () use ( $field ) {
-                    printf( '<input value="%s" name="%s">',
-                        get_option( $field ),
-                        $field
-                    );
-                },
-                self::SETTINGS_PAGE_NAME
-            );
-        }
-    }
 
     private function page_input_settings() {
         foreach ( $this->page_fields() as $field => $title ) {

@@ -4,7 +4,6 @@ namespace BinaryGary\Rocket\Launch_Library;
 
 use BinaryGary\Rocket\Slack\Post_Message;
 use BinaryGary\Rocket\Slack\Webhooks;
-use BinaryGary\Rocket\Twitter\Message;
 
 class Retriever {
 
@@ -27,7 +26,7 @@ class Retriever {
 
 	protected $timestamp;
 
-	public function __construct( Webhooks $webhooks, Message $twitter ) {
+	public function __construct( Webhooks $webhooks ) {
 		$this->messages  = $webhooks;
 		$this->timestamp = time();
 	}

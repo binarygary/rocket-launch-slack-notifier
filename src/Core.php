@@ -8,7 +8,6 @@ use BinaryGary\Rocket\Service_Providers\Post_Type_Provider;
 use BinaryGary\Rocket\Service_Providers\Shortcodes_Provider;
 use BinaryGary\Rocket\Service_Providers\Slack_Provider;
 use BinaryGary\Rocket\Service_Providers\Space_Devs_Provider;
-use BinaryGary\Rocket\Service_Providers\Twitter_Service_Provider;
 use Pimple\Container;
 use BinaryGary\Rocket\Service_Providers\Settings_Provider;
 
@@ -44,7 +43,6 @@ class Core {
 		$this->container->register( new Slack_Provider() );
 		$this->container->register( new Post_Type_Provider() );
 		$this->container->register( new Launch_Library_Provider() );
-		$this->container->register( new Twitter_Service_Provider() );
 		$this->container->register( new Space_Devs_Provider() );
 	}
 
